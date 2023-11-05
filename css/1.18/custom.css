@@ -1,0 +1,102 @@
+@font-face {
+	font-family: 'UglyQua';
+	src: url('../../fonts/UglyQua.ttf') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+body {
+	background: white;
+}
+
+.full-width {
+	margin: 0;
+	padding: 0;
+}
+
+.navbar {
+	margin-top: -52px;
+	margin-bottom: 0px;
+}
+
+.template-container {
+	padding: 0 30px;
+}
+
+.row {
+	margin: 0 0 30px 0;
+}
+
+.widget {
+	overflow: hidden;
+}
+
+.template-container .row:first-child > .widget:first-child {
+	margin-top: 30px;
+}
+
+.widget-margin {
+	margin-top: 30px;
+}
+
+.panel {
+	width: 100%;
+	height: 100%;
+}
+
+.panel-body {
+	height: 90%;
+}
+
+h1.title {
+	font-family: UglyQua;
+	display: inline
+}
+
+li.list-group-item span.cardname{
+	font-family: UglyQua;
+}
+
+.Assets li.list-group-item {
+	background-image: none;
+	background-color: #dfcb9a;
+	color: black;
+}
+
+.UniqueAssets li.list-group-item {
+	background-image: none;
+	background-color: #d3a84a;
+	color: black;
+}
+
+.Conditions li.list-group-item {
+	background-image: none;
+	background-color: #e8e8c7;
+	color: black;
+}
+
+.Spells li.list-group-item {
+	background-image: none;
+	background-color: #835e8e;
+	color: white;
+}
+
+.Artifacts li.list-group-item {
+	background-image: none;
+	background-color: #a73a41;
+	color: white;
+}
+
+.badge {
+	background-color: black;
+	color: white;
+}
+
+.list-group-item > .glyphicon-remove {
+	float: right;
+	margin-left: 30px;
+}
+
+#expansions {
+	font-family: UglyQua;
+}

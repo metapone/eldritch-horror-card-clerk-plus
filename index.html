@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+	<title>Eldritch Horror Card Clerk</title>
+	<!-- stylesheets -->
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css">
+	<link rel="stylesheet" href="css/1.18/custom.css">
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<a href="index.html"><img src="eldritchhorror.png"></a>
+				<h1 class="title">Card Clerk</h1><sup><a href="history.html">v1.18</a></sup>
+			</div>
+		</div>
+		<div class="row hidden persisted gameForm" id="loadGameForm">
+			<div class="col-md-12">
+				<div class="panel panel-default newGameForm">
+					<div class="panel-heading">Load Game</div>
+					<div class="panel-body">
+						<p>Your last session can be loaded by pressing the Load Game button below.</p>
+						<div class="container">
+							<div class="row">
+								<div clas="col-md-1">
+									<button id="loadGameButton" class="btn btn-primary">Load Game</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row gameForm" id="newGameForm">
+			<div class="col-md-12">
+				<div class="panel panel-default newGameForm">
+					<div class="panel-heading">New Game</div>
+					<div class="panel-body">
+						<p>Select the Expansions you want to include in this game below and then press the New Game button to get
+							started. <span class="hidden persisted">Please notice that this will replace your previous session.</span>
+						</p>
+						<div class="container">
+							<div class="row" id="expansions"></div>
+							<div class="row">
+								<div clas="col-md-1">
+									<button id="newGameButton" class="btn btn-primary">New Game</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="row">
+			<div class="panel-group" id="panels"></div>
+
+
+		</div>
+		<footer class="footer">
+			<div class="container">
+				<span class="text-muted credit"><a
+					href="https://boardgamegeek.com/boardgame/146021/eldritch-horror">Eldritch Horror</a> is a tabletop board game published by <a
+					href="https://www.fantasyflightgames.com/en/products/eldritch-horror/">Fantasy Flight Games</a>, who owns all Copyright to the material.</span>
+				</div>
+			</footer>
+
+
+			<!-- scripts -->
+			<script src="js/1.18/jquery-2.1.4.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+			<script src="js/1.18/jquery.tmpl.min.js"></script>
+			<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+			<!-- types -->
+			<script src="js/1.18/types.js"></script>
+
+
+			<!-- decks -->
+			<script src="js/1.18/assets.js"></script>
+			<script src="js/1.18/conditions.js"></script>
+			<script src="js/1.18/artifacts.js"></script>
+			<script src="js/1.18/spells.js"></script>
+			<script src="js/1.18/uniqueAssets.js"></script>
+
+
+
+			<!-- main script -->
+			<script src="js/1.18/main.js"></script>
+
+			<script id="deckPanelTemplate" type="text/html">
+				<div class="panel panel-default hidden currentGameForm ${name}" data-deck="${name}">
+					<div class="panel-heading">${name}</div>
+					<div class="panel-body">
+						<button id="draw${name}Button" class="btn btn-primary draw" data-name="${name}"
+						onclick="eldritch.main.deal(eldritch.main.getDeckByName('${name}'));">Draw card
+					</button>
+					<button data-toggle="collapse" data-target="#${name}TraitsToggle" class="btn">Toggle Traits Filter</button>
+					<button data-toggle="collapse" data-target="#${name}Toggle" class="btn">Toggle history</button>
+					<div id="${name}TraitsToggle" class="collapse">
+						<span>Logic operator : <input data-size="mini" class="logic-toggle" checked data-toggle="toggle" data-on="AND" data-off="OR" data-onstyle="primary" data-offstyle="secondary" type="checkbox"></span>
+						<br>
+						{{each(i,trait) availableTraits}}
+						<label class="checkbox-inline"><input class="filter" type="checkbox" value="${trait}"><span
+							class="badge">${trait}</span></label>
+							{{/each}}
+						</div>
+						<p class="count">Deck contains <span class="availableCards">${availableCards.length}</span> ${name}.</p>
+						<ul class="list-group lastDrawnCard"></ul>
+						<div id="${name}Toggle" class="collapse">
+							<p>Drawn cards:<br>
+								<ul class="list-group drawnCards"></ul>
+							</p>
+						</div>
+					</div>
+				</div>
+			</script>
+			<script id="availableExpansionListTemplate" type="text/html">
+				<div class="col-md-1">
+					<input class="possibleDeck" type="checkbox" value="${name}" checked>
+					<img src="${image}">
+					<label>${name}</label>
+				</div>
+			</script>
+			<script id="selectedExpansionListTemplate" type="text/html">
+				<div class="col-md-1">
+					<img src="${image}">
+				</div>
+			</script>
+			<script id="historicalCardTemplate" type="text/html">
+				<li class="list-group-item"><span class="cardname">${name}</span>
+					<span class="glyphicon glyphicon-remove" data-id="${id}"></span>
+					{{each(i,trait) traits}}
+					<span class="trait badge">${trait}</span>
+					{{/each}}
+
+				</li>
+			</script>
+			<script>
+				(function (i, s, o, g, r, a, m) {
+					i['GoogleAnalyticsObject'] = r;
+					i[r] = i[r] || function () {
+						(i[r].q = i[r].q || []).push(arguments)
+					}, i[r].l = 1 * new Date();
+					a = s.createElement(o),
+					m = s.getElementsByTagName(o)[0];
+					a.async = 1;
+					a.src = g;
+					m.parentNode.insertBefore(a, m)
+				})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+				ga('create', 'UA-92185676-1', 'auto');
+				ga('send', 'pageview');
+
+			</script>
+		</body>
+		</html>
