@@ -87,6 +87,12 @@ li.list-group-item span.cardname{
 	color: white;
 }
 
+.Monsters li.list-group-item {
+	background-image: none;
+	background-color: #f5f5f5;
+	color: black;
+}
+
 .badge {
 	background-color: black;
 	color: white;
