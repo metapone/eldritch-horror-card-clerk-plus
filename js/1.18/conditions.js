@@ -619,13 +619,6 @@ var conditions = new Deck("Conditions", "2.0", [], [], [], [
                 ]
             },
             {
-                id: 84,
-                "name": "Despair",
-                "traits": [
-                    "MADNESS"
-                ]
-            },
-            {
                 id: 85,
                 "name": "Hunger",
                 "traits": [
@@ -644,13 +637,6 @@ var conditions = new Deck("Conditions", "2.0", [], [], [], [
                 "name": "Infection",
                 "traits": [
                     "ILLNESS"
-                ]
-            },
-            {
-                id: 88,
-                "name": "Despair",
-                "traits": [
-                    "MADNESS"
                 ]
             },
             {
@@ -675,13 +661,6 @@ var conditions = new Deck("Conditions", "2.0", [], [], [], [
                 ]
             },
             {
-                id: 92,
-                "name": "Despair",
-                "traits": [
-                    "MADNESS"
-                ]
-            },
-            {
                 id: 93,
                 "name": "Hunger",
                 "traits": [
@@ -693,13 +672,6 @@ var conditions = new Deck("Conditions", "2.0", [], [], [], [
                 "name": "Hypothermia",
                 "traits": [
                     "EXPOSURE"
-                ]
-            },
-            {
-                id: 95,
-                "name": "Despair",
-                "traits": [
-                    "MADNESS"
                 ]
             },
             {
@@ -835,6 +807,34 @@ var conditions = new Deck("Conditions", "2.0", [], [], [], [
         "name": "Under the Pyramids",
         "image": "underthepyramids.png",
         "cards": [
+            {
+                id: 84,
+                "name": "Despair",
+                "traits": [
+                    "MADNESS"
+                ]
+            },
+            {
+                id: 88,
+                "name": "Despair",
+                "traits": [
+                    "MADNESS"
+                ]
+            },
+            {
+                id: 92,
+                "name": "Despair",
+                "traits": [
+                    "MADNESS"
+                ]
+            },
+            {
+                id: 95,
+                "name": "Despair",
+                "traits": [
+                    "MADNESS"
+                ]
+            },
             {
                 id: 113,
                 "name": "Diseased",
