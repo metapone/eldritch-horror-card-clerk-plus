@@ -1,0 +1,36 @@
+.mythos-grid {
+	display: grid;
+	grid-template-columns: max-content repeat(3, minmax(0, 70px));
+	gap: 5px;
+	margin-bottom: 15px;
+}
+
+.mythos-grid .mythos-stage {
+	text-align: right;
+}
+
+.mythos-grid .new-stage {
+	margin-top: 10px;
+}
+
+.mythos-grid input {
+	text-align: center;
+	color: white;
+	font-weight: bold;
+}
+
+.mythos-grid .mythos-green {
+	background-color: #467e25;
+}
+
+.mythos-grid .mythos-yellow {
+	background-color: #e8b54b;
+}
+
+.mythos-grid .mythos-blue {
+	background-color: #5870c4;
+}
+
+.mythos-error {
+	color: red;
+}

@@ -1,0 +1,157 @@
+@font-face {
+	font-family: "TeX Gyre Termes";
+	src: url("../fonts/TeX Gyre Termes Regular.otf");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "TeX Gyre Termes";
+	src: url("../fonts/TeX Gyre Termes Italic.otf");
+	font-weight: 400;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "Birmingham";
+	src: url("../fonts/Birmingham.ttf") format("truetype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Ugly Qua";
+	src: url("../fonts/Ugly Qua.ttf") format("truetype");
+	font-weight: 400;
+	font-style: italic;
+}
+
+body,
+button,
+select {
+	font-family: "TeX Gyre Termes", "Times New Roman", serif;
+	font-size: 18px;
+}
+
+button,
+select {
+	background-color: #eae3d3;
+	border: 2px black outset;
+	padding: 2px 5px;
+	font-variant-caps: small-caps;
+	margin-bottom: 5px;
+}
+
+h1 {
+	font-family: "Birmingham";
+	font-weight: 400;
+	font-size: 35px;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.view {
+	display: none;
+}
+
+.start-view {
+	display: block;
+	text-align: center;
+}
+
+.expansions {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	column-gap: 5px;
+	row-gap: 5px;
+	margin-top: 20px;
+}
+
+.expansion__image {
+	vertical-align: middle;
+}
+
+.expansion__name,
+.name-filter__input {
+	font-family: "Ugly Qua";
+	font-variant-caps: small-caps;
+	font-size: 16px;
+}
+
+footer {
+	margin-top: 30px;
+	margin-bottom: 20px;
+	color: gray;
+}
+
+.back-button {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+}
+
+.logic-operator-wrapper {
+	margin-top: 10px;
+}
+
+.last-drawn-card,
+.drawn-cards {
+	margin-top: 10px;
+}
+
+.no-newest-card {
+	display: none;
+}
+
+.newest-card,
+.history {
+	margin: 0;
+}
+
+.card {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background-color: #eae3d3;
+	border: 2px #af814f solid;
+	padding: 2px 0 2px 5px;
+	font-family: "Ugly Qua";
+	margin-top: -2px;
+}
+
+.card__shuffleIn {
+	border-style: none;
+	margin-bottom: 0;
+	width: 20px;
+	height: 20px;
+	position: relative;
+}
+
+.card__shuffleIn:before,
+.card__shuffleIn:after {
+	position: absolute;
+	right: 9px;
+	content: " ";
+	height: 15px;
+	width: 2px;
+	background-color: #333;
+	top: 2px;
+}
+
+.card__shuffleIn:before {
+	transform: rotate(45deg);
+}
+
+.card__shuffleIn:after {
+	transform: rotate(-45deg);
+}
+
+.trait {
+	white-space: nowrap;
+}
+
+.trait__name {
+	font-variant-caps: small-caps;
+	font-style: italic;
+	font-size: 19px;
+}

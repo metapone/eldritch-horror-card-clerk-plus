@@ -1,0 +1,66 @@
+
+
+.logic-operator {
+    display: inline-block;
+	width: 100px;
+	height: 31px;
+    vertical-align: bottom;
+}
+
+.logic-operator__switch {
+	cursor: pointer;
+	width: 100%;
+	height: calc(100% - 6px);
+	padding: 3px;
+	position: relative;
+	background-color: #eae3d3;
+	transition: all 0.5s ease;
+	border: 2px black outset;
+}
+
+.logic-operator__switch:before,
+.logic-operator__switch:after {
+	border-radius: 3px;
+	height: calc(100% - 6px);
+	width: calc(50% - 3px);
+	display: flex;
+	align-items: center;
+	position: absolute;
+	justify-content: center;
+	transition: all 0.3s ease;
+}
+
+.logic-operator__switch:before {
+	background-color: #cc1e17;
+    color: white;
+	left: 3px;
+	z-index: 10;
+	content: attr(data-unchecked);
+}
+
+.logic-operator__switch:after {
+	font-size: 0.7em;
+	right: 0;
+	content: attr(data-checked);
+}
+
+.logic-operator input {
+	display: none;
+}
+
+/* When checked, swap place of before and after elements */
+
+.logic-operator input:checked + .logic-operator__switch {
+    background-color: #eae3d3;
+}
+
+.logic-operator input:checked + .logic-operator__switch:before {
+    left: 50%;
+    content: attr(data-checked);
+}
+
+.logic-operator input:checked + .logic-operator__switch:after {
+    left: 0;
+	font-size: 0.7em;
+    content: attr(data-unchecked);
+}
