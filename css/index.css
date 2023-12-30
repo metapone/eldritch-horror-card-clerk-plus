@@ -117,6 +117,7 @@ footer {
 	padding: 2px 0 2px 5px;
 	font-family: "Ugly Qua";
 	margin-top: -2px;
+	color: black;
 }
 
 .card__shuffleIn {
@@ -154,4 +155,40 @@ footer {
 	font-variant-caps: small-caps;
 	font-style: italic;
 	font-size: 19px;
+}
+
+.deck {
+	margin-bottom: 20px;
+}
+
+.deck__name {
+	font-size: 1.5em;
+	font-variant-caps: small-caps;
+	margin-bottom: 5px;
+}
+
+.mythos fieldset {
+	background-color: #dad2e1;
+}
+
+.artifact fieldset {
+	background-color: #7f1c16;
+	color: white;
+}
+
+.condition fieldset {
+	background-color: #aaa09f;
+}
+
+.asset fieldset {
+	background-color: #bf6c10;
+}
+
+.spell fieldset {
+	background-color: #856089;
+	color: white;
+}
+
+.uniqueAsset fieldset {
+	background-color: #d9b55f;
 }

@@ -1,5 +1,6 @@
 deckData.push({
 	name: "Spell",
+	cssClass: "spell",
 	cardsByExpansions: [
 		{
 			expansionID: 0,

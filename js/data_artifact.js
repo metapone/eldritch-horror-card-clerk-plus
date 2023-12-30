@@ -1,5 +1,6 @@
 deckData.push({
 	name: "Artifact",
+	cssClass: "artifact",
 	cardsByExpansions: [
 		{
 			expansionID: 0,

@@ -1,5 +1,6 @@
 deckData.push({
 	name: "Asset (Non-Unique)",
+	cssClass: "asset",
 	cardsByExpansions: [
 		{
 			expansionID: 0,

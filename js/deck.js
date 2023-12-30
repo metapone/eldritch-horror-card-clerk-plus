@@ -1,11 +1,13 @@
 class deck {
 	name = "";
+	cssClass = "";
 	availableCards = [];
 	playedCards = [];
 	traits = new Set();
 
-	constructor(name, availableCards, playedCards) {
+	constructor(name, cssClass, availableCards, playedCards) {
 		this.name = name;
+		this.cssClass = cssClass;
 		this.availableCards = availableCards || [];
 		this.playedCards = playedCards || [];
 		this.#createTraitList();

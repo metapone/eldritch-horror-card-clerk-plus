@@ -1,5 +1,6 @@
 deckData.push({
 	name: "Condition",
+	cssClass: "condition",
 	cardsByExpansions: [
 		{
 			expansionID: 0,

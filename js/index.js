@@ -29,7 +29,7 @@ function buildDecks() {
 		const availableCards = data.cardsByExpansions
 			.filter((cardGroup) => expansions.includes(cardGroup.expansionID))
 			.flatMap((cardGroup) => cardGroup.cards);
-		const newDeck = new deck(data.name, availableCards);
+		const newDeck = new deck(data.name, data.cssClass, availableCards);
 		newDeck.shuffle();
 		decks.push(newDeck);
 	});
@@ -47,6 +47,8 @@ function renderDeckPanels() {
 		const historyPlaceholder = itemNode.querySelector(".history");
 
 		itemNode.querySelector(".deck").name = deck.name;
+		console.log(deck)
+		itemNode.querySelector(".deck").classList.add(deck.cssClass);
 		itemNode.querySelector("form").addEventListener("submit", drawCard);
 		itemNode.querySelector(".deck__name").textContent = deck.name;
 		itemNode.querySelector(".deck__index").value = index;
