@@ -20,10 +20,11 @@
 }
 
 @font-face {
-	font-family: "Ugly Qua";
-	src: url("../fonts/Ugly Qua.ttf") format("truetype");
+    font-family: "Ugly Qua";
+	src: url("../fonts/Ugly Qua.woff") format('woff'),
+	     url("../fonts/Ugly Qua.ttf") format("truetype");
 	font-weight: 400;
-	font-style: italic;
+	font-style: normal;
 }
 
 body,

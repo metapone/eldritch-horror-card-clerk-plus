@@ -330,7 +330,7 @@ deckData.push({
 				},
 				{
 					id: 54,
-					name: "Research student",
+					name: "Research Student",
 					traits: ["Ally"],
 					cost: 1,
 				},

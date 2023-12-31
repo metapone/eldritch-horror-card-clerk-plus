@@ -47,7 +47,6 @@ function renderDeckPanels() {
 		const historyPlaceholder = itemNode.querySelector(".history");
 
 		itemNode.querySelector(".deck").name = deck.name;
-		console.log(deck)
 		itemNode.querySelector(".deck").classList.add(deck.cssClass);
 		itemNode.querySelector("form").addEventListener("submit", drawCard);
 		itemNode.querySelector(".deck__name").textContent = deck.name;
