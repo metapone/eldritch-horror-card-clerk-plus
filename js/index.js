@@ -107,9 +107,19 @@ function renderNameFilter(cards, nameFilterPlaceholder, id) {
 }
 
 function renderDrawnCard(card, drawnCardPlaceholder) {
-	const cardTemplate = document.getElementById("cardItemTemplate");
+	const cardTemplate = document.getElementById("lastDrawnCardItemTemplate");
 	const itemNode = cardTemplate.content.cloneNode(true);
-	itemNode.querySelector(".card").textContent = card.name;
+	const itemTraitsNode = itemNode.querySelector(".last-drawn__traits");
+	const badgeNode = document.createElement("span");
+
+	itemNode.querySelector(".last-drawn__name").textContent = card.name;
+	badgeNode.classList.add("badge");
+	Array.from(card.traits).sort().forEach(trait => {
+		const traitNode = badgeNode.cloneNode();
+		traitNode.textContent = trait;
+		itemTraitsNode.appendChild(traitNode);
+	})
+
 	drawnCardPlaceholder.replaceChildren(itemNode);
 }
 

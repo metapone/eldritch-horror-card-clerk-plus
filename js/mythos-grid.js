@@ -133,7 +133,6 @@ function renderMythosHistoryList() {
 	const cardTemplate = document.getElementById("cardItemTemplate");
 	const fragment = document.createDocumentFragment();
 	mythosDeck.playedCards.toReversed().forEach((card, index) => {
-		const cardIndex = mythosDeck.playedCards.length - 1 - index; // Because card list is reversed beforehand
 		const itemNode = cardTemplate.content.cloneNode(true);
 		itemNode.querySelector(".card").textContent = card.name;
 		fragment.appendChild(itemNode);

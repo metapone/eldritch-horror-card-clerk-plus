@@ -20,9 +20,8 @@
 }
 
 @font-face {
-    font-family: "Ugly Qua";
-	src: url("../fonts/Ugly Qua.woff") format('woff'),
-	     url("../fonts/Ugly Qua.ttf") format("truetype");
+	font-family: "Ugly Qua";
+	src: url("../fonts/Ugly Qua.woff") format("woff"), url("../fonts/Ugly Qua.ttf") format("truetype");
 	font-weight: 400;
 	font-style: normal;
 }
@@ -50,6 +49,7 @@ h1 {
 	font-size: 35px;
 	text-align: center;
 	margin-bottom: 20px;
+	line-height: 50px;
 }
 
 .view {
@@ -193,4 +193,26 @@ footer {
 
 .uniqueAsset fieldset {
 	background-color: #d9b55f;
+}
+
+.last-drawn {
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	column-gap: 20px;
+}
+
+.last-drawn__name {
+	flex: 1 0 auto;
+}
+
+.last-drawn__traits {
+	flex: 0 0 auto;
+}
+
+.badge {
+	margin-right: 5px;
+	background-color: black;
+	color: white;
+	font-style: italic;
+	padding: 0px 5px;
 }
