@@ -42,6 +42,7 @@
 	font-size: 0.7em;
 	right: 0;
 	content: attr(data-checked);
+	color: black;
 }
 
 .logic-operator input {
