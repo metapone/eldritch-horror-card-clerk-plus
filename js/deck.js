@@ -26,7 +26,7 @@ class deck {
 		for (let i = 0; i < this.availableCards.length; i++) {
 			const card = this.availableCards[i];
 
-			if (searchString.length > 0 && !card.name.includes(searchString)) continue;
+			if (searchString.length > 0 && !card.name.toLowerCase().includes(searchString.toLowerCase())) continue;
 
 			if (!!traitsFilter && traitsFilter.length > 0) {
 				if (isOr) {
