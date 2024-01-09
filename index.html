@@ -45,59 +45,62 @@
 				<label>
 					<input type="checkbox" class="toggle-advance-composition" onclick="toggleMythosGrid(this.checked)" />Use Advanced Composition Mode
 				</label>
-				<div class="mythos-grid mythos-grid-simple">
-					<div class="mythos-stage">Stage I:</div>
-					<input type="number" min="0" class="mythos-green" data-stage="1" data-color="green" />
-					<input type="number" min="0" class="mythos-yellow" data-stage="1" data-color="yellow" />
-					<input type="number" min="0" class="mythos-blue" data-stage="1" data-color="blue" />
-					<div class="mythos-stage">Stage II:</div>
-					<input type="number" min="0" class="mythos-green" data-stage="2" data-color="green" />
-					<input type="number" min="0" class="mythos-yellow" data-stage="2" data-color="yellow" />
-					<input type="number" min="0" class="mythos-blue" data-stage="2" data-color="blue" />
-					<div class="mythos-stage">Stage III:</div>
-					<input type="number" min="0" class="mythos-green" data-stage="3" data-color="green" />
-					<input type="number" min="0" class="mythos-yellow" data-stage="3" data-color="yellow" />
-					<input type="number" min="0" class="mythos-blue" data-stage="3" data-color="blue" />
-				</div>
-				<div class="mythos-grid mythos-grid-advanced">
-					<div class="mythos-stage">Stage I Easy:</div>
-					<input type="number" min="0" class="mythos-green" data-stage="1" data-color="green" data-difficulty="easy" />
-					<input type="number" min="0" class="mythos-yellow" data-stage="1" data-color="yellow" data-difficulty="easy" />
-					<input type="number" min="0" class="mythos-blue" data-stage="1" data-color="blue" data-difficulty="easy" />
-					<div class="mythos-stage" data-stage="1">Stage I Normal:</div>
-					<input type="number" min="0" class="mythos-green" data-stage="1" data-color="green" data-difficulty="normal" />
-					<input type="number" min="0" class="mythos-yellow" data-stage="1" data-color="yellow" data-difficulty="normal" />
-					<input type="number" min="0" class="mythos-blue" data-stage="1" data-color="blue" data-difficulty="normal" />
-					<div class="mythos-stage" data-stage="1">Stage I Hard:</div>
-					<input type="number" min="0" class="mythos-green" data-stage="1" data-color="green" data-difficulty="hard" />
-					<input type="number" min="0" class="mythos-yellow" data-stage="1" data-color="yellow" data-difficulty="hard" />
-					<input type="number" min="0" class="mythos-blue" data-stage="1" data-color="blue" data-difficulty="hard" />
-					<div class="mythos-stage new-stage">Stage II Easy:</div>
-					<input type="number" min="0" class="mythos-green new-stage" data-stage="2" data-color="green" data-difficulty="easy" />
-					<input type="number" min="0" class="mythos-yellow new-stage" data-stage="2" data-color="yellow" data-difficulty="easy" />
-					<input type="number" min="0" class="mythos-blue new-stage" data-stage="2" data-color="blue" data-difficulty="easy" />
-					<div class="mythos-stage" data-stage="2">Stage II Normal:</div>
-					<input type="number" min="0" class="mythos-green" data-stage="2" data-color="green" data-difficulty="normal" />
-					<input type="number" min="0" class="mythos-yellow" data-stage="2" data-color="yellow" data-difficulty="normal" />
-					<input type="number" min="0" class="mythos-blue" data-stage="2" data-color="blue" data-difficulty="normal" />
-					<div class="mythos-stage" data-stage="2">Stage II Hard:</div>
-					<input type="number" min="0" class="mythos-green" data-stage="2" data-color="green" data-difficulty="hard" />
-					<input type="number" min="0" class="mythos-yellow" data-stage="2" data-color="yellow" data-difficulty="hard" />
-					<input type="number" min="0" class="mythos-blue" data-stage="2" data-color="blue" data-difficulty="hard" />
-					<div class="mythos-stage new-stage">Stage III Easy:</div>
-					<input type="number" min="0" class="mythos-green new-stage" data-stage="3" data-color="green" data-difficulty="easy" />
-					<input type="number" min="0" class="mythos-yellow new-stage" data-stage="3" data-color="yellow" data-difficulty="easy" />
-					<input type="number" min="0" class="mythos-blue new-stage" data-stage="3" data-color="blue" data-difficulty="easy" />
-					<div class="mythos-stage" data-stage="3">Stage III Normal:</div>
-					<input type="number" min="0" class="mythos-green" data-stage="3" data-color="green" data-difficulty="normal" />
-					<input type="number" min="0" class="mythos-yellow" data-stage="3" data-color="yellow" data-difficulty="normal" />
-					<input type="number" min="0" class="mythos-blue" data-stage="3" data-color="blue" data-difficulty="normal" />
-					<div class="mythos-stage" data-stage="3">Stage III Hard:</div>
-					<input type="number" min="0" class="mythos-green" data-stage="3" data-color="green" data-difficulty="hard" />
-					<input type="number" min="0" class="mythos-yellow" data-stage="3" data-color="yellow" data-difficulty="hard" />
-					<input type="number" min="0" class="mythos-blue" data-stage="3" data-color="blue" data-difficulty="hard" />
-				</div>
-				<button onclick="buildMythosDeck()">Build Mythos Deck</button>
+				<form>
+					<div class="mythos-grid mythos-grid-simple">
+						<div class="mythos-stage">Stage I:</div>
+						<input type="number" min="0" class="mythos-green" data-stage="1" data-color="green" />
+						<input type="number" min="0" class="mythos-yellow" data-stage="1" data-color="yellow" />
+						<input type="number" min="0" class="mythos-blue" data-stage="1" data-color="blue" />
+						<div class="mythos-stage">Stage II:</div>
+						<input type="number" min="0" class="mythos-green" data-stage="2" data-color="green" />
+						<input type="number" min="0" class="mythos-yellow" data-stage="2" data-color="yellow" />
+						<input type="number" min="0" class="mythos-blue" data-stage="2" data-color="blue" />
+						<div class="mythos-stage">Stage III:</div>
+						<input type="number" min="0" class="mythos-green" data-stage="3" data-color="green" />
+						<input type="number" min="0" class="mythos-yellow" data-stage="3" data-color="yellow" />
+						<input type="number" min="0" class="mythos-blue" data-stage="3" data-color="blue" />
+					</div>
+					<div class="mythos-grid mythos-grid-advanced">
+						<div class="mythos-stage">Stage I Easy:</div>
+						<input type="number" min="0" class="mythos-green" data-stage="1" data-color="green" data-difficulty="easy" />
+						<input type="number" min="0" class="mythos-yellow" data-stage="1" data-color="yellow" data-difficulty="easy" />
+						<input type="number" min="0" class="mythos-blue" data-stage="1" data-color="blue" data-difficulty="easy" />
+						<div class="mythos-stage" data-stage="1">Stage I Normal:</div>
+						<input type="number" min="0" class="mythos-green" data-stage="1" data-color="green" data-difficulty="normal" />
+						<input type="number" min="0" class="mythos-yellow" data-stage="1" data-color="yellow" data-difficulty="normal" />
+						<input type="number" min="0" class="mythos-blue" data-stage="1" data-color="blue" data-difficulty="normal" />
+						<div class="mythos-stage" data-stage="1">Stage I Hard:</div>
+						<input type="number" min="0" class="mythos-green" data-stage="1" data-color="green" data-difficulty="hard" />
+						<input type="number" min="0" class="mythos-yellow" data-stage="1" data-color="yellow" data-difficulty="hard" />
+						<input type="number" min="0" class="mythos-blue" data-stage="1" data-color="blue" data-difficulty="hard" />
+						<div class="mythos-stage new-stage">Stage II Easy:</div>
+						<input type="number" min="0" class="mythos-green new-stage" data-stage="2" data-color="green" data-difficulty="easy" />
+						<input type="number" min="0" class="mythos-yellow new-stage" data-stage="2" data-color="yellow" data-difficulty="easy" />
+						<input type="number" min="0" class="mythos-blue new-stage" data-stage="2" data-color="blue" data-difficulty="easy" />
+						<div class="mythos-stage" data-stage="2">Stage II Normal:</div>
+						<input type="number" min="0" class="mythos-green" data-stage="2" data-color="green" data-difficulty="normal" />
+						<input type="number" min="0" class="mythos-yellow" data-stage="2" data-color="yellow" data-difficulty="normal" />
+						<input type="number" min="0" class="mythos-blue" data-stage="2" data-color="blue" data-difficulty="normal" />
+						<div class="mythos-stage" data-stage="2">Stage II Hard:</div>
+						<input type="number" min="0" class="mythos-green" data-stage="2" data-color="green" data-difficulty="hard" />
+						<input type="number" min="0" class="mythos-yellow" data-stage="2" data-color="yellow" data-difficulty="hard" />
+						<input type="number" min="0" class="mythos-blue" data-stage="2" data-color="blue" data-difficulty="hard" />
+						<div class="mythos-stage new-stage">Stage III Easy:</div>
+						<input type="number" min="0" class="mythos-green new-stage" data-stage="3" data-color="green" data-difficulty="easy" />
+						<input type="number" min="0" class="mythos-yellow new-stage" data-stage="3" data-color="yellow" data-difficulty="easy" />
+						<input type="number" min="0" class="mythos-blue new-stage" data-stage="3" data-color="blue" data-difficulty="easy" />
+						<div class="mythos-stage" data-stage="3">Stage III Normal:</div>
+						<input type="number" min="0" class="mythos-green" data-stage="3" data-color="green" data-difficulty="normal" />
+						<input type="number" min="0" class="mythos-yellow" data-stage="3" data-color="yellow" data-difficulty="normal" />
+						<input type="number" min="0" class="mythos-blue" data-stage="3" data-color="blue" data-difficulty="normal" />
+						<div class="mythos-stage" data-stage="3">Stage III Hard:</div>
+						<input type="number" min="0" class="mythos-green" data-stage="3" data-color="green" data-difficulty="hard" />
+						<input type="number" min="0" class="mythos-yellow" data-stage="3" data-color="yellow" data-difficulty="hard" />
+						<input type="number" min="0" class="mythos-blue" data-stage="3" data-color="blue" data-difficulty="hard" />
+					</div>
+					<button onclick="buildMythosDeck()">Build Mythos Deck</button>
+					<button type="reset">Reset</button>
+				</form>
 				<div class="mythos-error"></div>
 			</fieldset>
 
@@ -136,7 +139,10 @@
 			This website is based on
 			<a href="https://boardgamegeek.com/thread/1730002/eldritch-horror-card-clerk">Eldritch Horror Card Clerk</a>
 			by Magnus Rydin.
-			<p>Have an issue or a feature idea? Log a ticket on GitHub <a href="https://github.com/metapone/eldritch-horror-card-clerk-plus/issues">here</a>.</p>
+			<p>
+				Have an issue or a feature idea? Log a ticket on GitHub
+				<a href="https://github.com/metapone/eldritch-horror-card-clerk-plus/issues">here</a>.
+			</p>
 		</footer>
 
 		<!-- Templates -->
