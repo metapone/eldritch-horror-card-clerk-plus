@@ -1,6 +1,8 @@
 const deckData = []; // Store all raw deck data in format below
 /* 
 name: <Deck name>,
+subtitle: <Name subtitle>,
+cssClass: <CSS class>,
 cardsByExpansions: [
 {
     expansionID: <Expansion ID>,

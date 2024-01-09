@@ -169,6 +169,10 @@ footer {
 	margin-bottom: 5px;
 }
 
+.deck__subtitle {
+	font-variant-caps: small-caps;
+}
+
 .mythos fieldset {
 	background-color: #dad2e1;
 }

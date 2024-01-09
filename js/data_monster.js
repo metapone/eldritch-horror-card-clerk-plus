@@ -1,5 +1,6 @@
 deckData.push({
-	name: "Monster (Non-Epic)",
+	name: "Monster",
+	subtitle: " (Non-Epic)",
 	cssClass: "monster",
 	cardsByExpansions: [
 		{

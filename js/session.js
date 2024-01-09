@@ -30,12 +30,12 @@ function loadGame() {
 
 function loadDecks(savedItem) {
 	savedItem.decks.forEach((item) => {
-		decks.push(new deck(item.name, item.cssClass, item.availableCards, item.playedCards));
+		decks.push(new deck(item.name, item.subtitle, item.cssClass, item.availableCards, item.playedCards));
 	});
 
 	const savedMythos = savedItem.mythosDeck;
 	if (savedMythos) {
-		mythosDeck = new deck(savedMythos.name, savedMythos.cssClass, savedMythos.availableCards, savedMythos.playedCards);
+		mythosDeck = new deck(savedMythos.name, savedMythos.subtitle, savedMythos.cssClass, savedMythos.availableCards, savedMythos.playedCards);
 	}
 }
 

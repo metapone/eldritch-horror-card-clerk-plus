@@ -87,7 +87,7 @@ function buildMythosDeck() {
 		deckCards = deckCards.concat(stageCards);
 	}
 
-	mythosDeck = new deck("Mythos", "", deckCards);
+	mythosDeck = new deck("Mythos", "", "", deckCards);
 	renderInitMythosDeck();
 	saveGame();
 }
