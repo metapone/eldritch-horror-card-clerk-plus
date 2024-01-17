@@ -17,6 +17,7 @@
 		<script src="js/data_monster.js"></script>
 		<script src="js/data_spell.js"></script>
 		<script src="js/data_unique_asset.js"></script>
+		<script src="js/data_ancient_one.js"></script>
 		<!-- Logic -->
 		<script src="js/deck.js"></script>
 		<script src="js/index.js"></script>
@@ -36,16 +37,13 @@
 		<div id="mainView" class="view">
 			<fieldset class="deck">
 				<div class="deck__name">Mythos Deck Composition</div>
-				<!-- <label for="ancientOne">Preset: </label>
-				<select name="ancientOne">
-					<option>Azathoth</option>
-					<option>Cthulhu</option>
-				</select>
-				<br /> -->
+				<label for="ancientOne">Preset: </label>
+				<select name="ancientOne" onchange="settingPreset(event)"></select>
+				<br />
 				<label>
 					<input type="checkbox" class="toggle-advance-composition" onclick="toggleMythosGrid(this.checked)" />Use Advanced Composition Mode
 				</label>
-				<form>
+				<form class="mythos-grid-form">
 					<div class="mythos-grid mythos-grid-simple">
 						<div class="mythos-stage">Stage I:</div>
 						<input type="number" min="0" class="mythos-green" data-stage="1" data-color="green" />
@@ -98,7 +96,7 @@
 						<input type="number" min="0" class="mythos-yellow" data-stage="3" data-color="yellow" data-difficulty="hard" />
 						<input type="number" min="0" class="mythos-blue" data-stage="3" data-color="blue" data-difficulty="hard" />
 					</div>
-					<button onclick="buildMythosDeck()">Build Mythos Deck</button>
+					<button type="button" onclick="buildMythosDeck()">Build Mythos Deck</button>
 					<button type="reset">Reset</button>
 				</form>
 				<div class="mythos-error"></div>

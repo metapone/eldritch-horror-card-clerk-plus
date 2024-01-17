@@ -184,9 +184,10 @@ function toggleMythosPanel(isVisible) {
 }
 
 function renderMythosDeckPanel() {
+	document.querySelector(".mythos .drawn-cards").style.display = "none";
 	toggleMythosGrid(document.querySelector(".toggle-advance-composition").checked);
 	toggleMythosPanel(false);
-	document.querySelector(".mythos .drawn-cards").style.display = "none";
+	loadPresetDropDown();
 }
 
 function renderInitMythosDeck() {
@@ -194,4 +195,54 @@ function renderInitMythosDeck() {
 	document.querySelector(".mythos .newest-card").style.display = "none";
 	document.querySelector(".mythos .no-newest-card").style.display = "none";
 	toggleMythosPanel(true);
+}
+
+function loadPresetDropDown() {
+	const fragment = document.createDocumentFragment();
+	const option = document.createElement("option");
+
+	const defaultOption = option.cloneNode();
+	defaultOption.value = 0;
+	defaultOption.text = "--Pick an Option--";
+	fragment.append(defaultOption);
+
+	ancientOneData
+		.filter((group) => expansions.includes(group.expansionID))
+		.flatMap((group) => group.cards)
+		.sort((a, b) => a.name.localeCompare(b.name))
+		.forEach((ancientOne) => {
+			const ancientOneOption = option.cloneNode();
+			ancientOneOption.value = ancientOne.id;
+			ancientOneOption.text = ancientOne.name;
+			fragment.append(ancientOneOption);
+		});
+	document.querySelector("select[name='ancientOne']").replaceChildren(fragment);
+}
+
+function settingPreset(event) {
+	const ancientOneId = event.target.value;
+	if (ancientOneId == 0) return;
+	const ancientOnePreset = getCompositionByAncientOneId(ancientOneId);
+	if (!ancientOnePreset) return;
+	document.querySelector("form.mythos-grid-form").reset();
+	const gridElement = document.querySelector(".mythos-grid-simple");
+	for (let i = 0; i < ancientOnePreset.length; i++) {
+		const preset = ancientOnePreset[i];
+		gridElement.querySelector(`input[data-stage='${preset.stage}'][data-color='${preset.color}']`).value = preset.count;
+	}
+	const isAdvanceCheckbox = document.querySelector(".toggle-advance-composition");
+	if (isAdvanceCheckbox.checked) {
+		isAdvanceCheckbox.click();
+	}
+}
+
+function getCompositionByAncientOneId(id) {
+	console.log(id);
+	for (let i = 0; i < ancientOneData.length; i++) {
+		for (let j = 0; j < ancientOneData[i].cards.length; j++) {
+			if (ancientOneData[i].cards[j].id == id) {
+				return ancientOneData[i].cards[j].mythosComposition;
+			}
+		}
+	}
 }
