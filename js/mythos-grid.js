@@ -10,7 +10,7 @@ function buildMythosDeck() {
 	const mythosToUse = mythosAvailable.slice();
 	let deckCards = [];
 
-	for (let i = 1; i <= 3; i++) {
+	for (let i = 0; i <= 3; i++) {
 		let stageCards = [];
 
 		const composition = isInAdvancedMode
@@ -94,8 +94,14 @@ function buildMythosDeck() {
 
 function getMythosCountRequired(container, stage, color, difficulty) {
 	let query = `[data-stage='${stage}'][data-color='${color}']`;
-	if (difficulty) query += `[data-difficulty='${difficulty}']`;
-	return parseInt(container.querySelector(query).value, 10) || 0;
+	if (difficulty) {
+		query += `[data-difficulty='${difficulty}']`;
+	}
+	const targetInput = container.querySelector(query);
+	if (targetInput) {
+		return parseInt(container.querySelector(query).value, 10) || 0;
+	}
+	return 0;
 }
 
 function getAvailableMythos() {
@@ -237,7 +243,6 @@ function settingPreset(event) {
 }
 
 function getCompositionByAncientOneId(id) {
-	console.log(id);
 	for (let i = 0; i < ancientOneData.length; i++) {
 		for (let j = 0; j < ancientOneData[i].cards.length; j++) {
 			if (ancientOneData[i].cards[j].id == id) {
