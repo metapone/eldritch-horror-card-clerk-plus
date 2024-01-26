@@ -116,18 +116,46 @@ footer {
 	justify-content: space-between;
 	background-color: #eae3d3;
 	border: 2px #af814f solid;
-	padding: 2px 0 2px 5px;
+	padding: 2px 5px;
 	font-family: "Ugly Qua";
 	margin-top: -2px;
 	color: black;
 }
 
+.last-drawn, .card-history {
+	position: relative;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	column-gap: 5px;
+}
+
+.card-history {
+	padding-right: 20px; /* same width as .card__shuffleIn */
+}
+
+.last-drawn__name, .card__name {
+	flex: 1 0 auto;
+}
+
+.last-drawn__traits, .card__traits {
+	flex: 0 0 auto;
+}
+
+.badge {
+	margin-left: 5px;
+	background-color: black;
+	color: white;
+	font-style: italic;
+	padding: 0px 5px;
+}
+
 .card__shuffleIn {
+	position: absolute;
+	right: 0;
 	border-style: none;
 	margin-bottom: 0;
 	width: 20px;
 	height: 20px;
-	position: relative;
 }
 
 .card__shuffleIn:before,
@@ -197,26 +225,4 @@ footer {
 
 .uniqueAsset fieldset {
 	background-color: #d9b55f;
-}
-
-.last-drawn {
-	flex-wrap: wrap;
-	justify-content: flex-end;
-	column-gap: 20px;
-}
-
-.last-drawn__name {
-	flex: 1 0 auto;
-}
-
-.last-drawn__traits {
-	flex: 0 0 auto;
-}
-
-.badge {
-	margin-right: 5px;
-	background-color: black;
-	color: white;
-	font-style: italic;
-	padding: 0px 5px;
 }

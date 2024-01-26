@@ -112,9 +112,9 @@ function renderDrawnCard(card, drawnCardPlaceholder) {
 	const itemNode = cardTemplate.content.cloneNode(true);
 	const itemTraitsNode = itemNode.querySelector(".last-drawn__traits");
 	const badgeNode = document.createElement("span");
+	badgeNode.classList.add("badge");
 
 	itemNode.querySelector(".last-drawn__name").textContent = card.name;
-	badgeNode.classList.add("badge");
 	Array.from(card.traits).sort().forEach(trait => {
 		const traitNode = badgeNode.cloneNode();
 		traitNode.textContent = trait;
@@ -129,6 +129,9 @@ function renderHistoryList(cardLists, historyPlaceholder) {
 	const fragment = document.createDocumentFragment();
 	const form = historyPlaceholder.closest("form");
 	const deckIndex = form.querySelector(".deck__index").value;
+	const badgeNode = document.createElement("span");
+	badgeNode.classList.add("badge");
+
 	cardLists.toReversed().forEach((card, index) => {
 		const shuffleInData = {
 			cardIndex: cardLists.length - 1 - index, // Because card list is reversed beforehand
@@ -137,6 +140,14 @@ function renderHistoryList(cardLists, historyPlaceholder) {
 		};
 		const itemNode = cardTemplate.content.cloneNode(true);
 		itemNode.querySelector(".card__name").textContent = card.name;
+
+		const itemTraitsNode = itemNode.querySelector(".card__traits");
+		Array.from(card.traits).sort().forEach(trait => {
+			const traitNode = badgeNode.cloneNode();
+			traitNode.textContent = trait;
+			itemTraitsNode.appendChild(traitNode);
+		})
+		
 		itemNode.querySelector(".card__shuffleIn").addEventListener("click", shuffleIn.bind(shuffleInData)); // Assign shuffleInData to "this"
 		fragment.appendChild(itemNode);
 	});
