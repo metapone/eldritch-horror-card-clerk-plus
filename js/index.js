@@ -60,6 +60,8 @@ function renderDeckPanels() {
 		renderCostList(Array.from(deck.costs).sort(), costPlaceholder);
 		renderHistoryList(deck.playedCards, historyPlaceholder);
 
+		itemNode.querySelector(".shuffle").addEventListener("click", () => shuffleDeck(index));
+
 		itemNode
 			.querySelector(".toggle-name-filter")
 			.addEventListener("click", toggleSectionByClassName.bind(itemNode.querySelector(".name-filter")));
@@ -187,6 +189,10 @@ function shuffleIn() {
 	const countPlaceholder = form.querySelector(".deck__count");
 	renderDeckCount(deck.availableCards.length, countPlaceholder);
 	renderHistoryList(deck.playedCards, historyPlaceholder);
+}
+
+function shuffleDeck(deckIndex) {
+	decks[deckIndex].shuffle();
 }
 
 function drawCard(event) {
