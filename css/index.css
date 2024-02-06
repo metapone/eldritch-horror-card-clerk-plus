@@ -181,7 +181,7 @@ footer {
 	white-space: nowrap;
 }
 
-.trait__name {
+.trait__name, .cost__name {
 	font-variant-caps: small-caps;
 	font-style: italic;
 	font-size: 19px;

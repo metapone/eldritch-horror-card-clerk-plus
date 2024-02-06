@@ -5,6 +5,7 @@ class deck {
 	availableCards = [];
 	playedCards = [];
 	traits = new Set();
+	costs = new Set();
 
 	constructor(name, subtitle, cssClass, availableCards, playedCards) {
 		this.name = name;
@@ -12,7 +13,7 @@ class deck {
 		this.cssClass = cssClass;
 		this.availableCards = availableCards || [];
 		this.playedCards = playedCards || [];
-		this.#createTraitList();
+		this.#createAttributeLists();
 	}
 
 	shuffle() {
@@ -20,7 +21,7 @@ class deck {
 		saveGame();
 	}
 
-	drawCards(count, traitsFilter, isOr, nameFilter) {
+	drawCards(count, traitsFilter, isOr, nameFilter, costsFilter) {
 		const drawnCards = [];
 		const searchString = !nameFilter ? "" : nameFilter.trim();
 		let filteredCardIndexes = [];
@@ -36,6 +37,11 @@ class deck {
 				} else {
 					if (traitsFilter.some((trait) => !card.traits.includes(trait))) continue;
 				}
+			}
+
+			if (!!costsFilter && costsFilter.length > 0) {
+				if (card.cost == null || card.cost == undefined) continue;
+				if (!costsFilter.includes(card.cost.toString())) continue;
 			}
 
 			filteredCardIndexes.push(i);
@@ -64,14 +70,20 @@ class deck {
 		saveGame();
 	}
 
-	// Trait list is built from the whole initial deck, not just remaining cards
-	// so that we can't know which trait has no card left just by looking at the filters
-	#createTraitList() {
+	// Attribute list is built from the whole initial deck, not just remaining cards
+	// so that we can't know which attribute has no card left just by looking at the filters
+	#createAttributeLists() {
 		const deckCards = this.availableCards.concat(this.playedCards);
 
 		for (let i = 0; i < deckCards.length; i++) {
-			for (let j = 0; j < deckCards[i].traits.length; j++) {
-				this.traits.add(deckCards[i].traits[j]);
+			if (Object.hasOwn(deckCards[i], "traits")) {
+				for (let j = 0; j < deckCards[i].traits.length; j++) {
+					this.traits.add(deckCards[i].traits[j]);
+				}
+			}
+
+			if (Object.hasOwn(deckCards[i], "cost")) {
+				this.costs.add(deckCards[i].cost);
 			}
 		}
 	}

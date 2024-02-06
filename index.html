@@ -178,6 +178,7 @@
 					<button type="submit" class="draw">Draw</button>
 					<button type="button" class="toggle-name-filter">Toggle Name Filter</button>
 					<button type="button" class="toggle-trait-filter">Toggle Trait Filter</button>
+					<button type="button" class="toggle-cost-filter">Toggle Cost Filter</button>
 					<button type="button" class="toggle-history">Toggle History</button>
 
 					<div class="name-filter" style="display: none">
@@ -195,6 +196,10 @@
 							</label>
 						</div>
 						<div class="traits"></div>
+					</div>
+
+					<div class="cost-filter" style="display: none">
+						Cost: <span class="costs"></span>
 					</div>
 
 					<div class="last-drawn-card">
@@ -215,6 +220,13 @@
 			<label class="trait">
 				<input type="checkbox" name="traits" class="trait__value" />
 				<span class="trait__name"></span>
+			</label>
+		</template>
+
+		<template id="costItemTemplate">
+			<label>
+				<input type="checkbox" name="costs" class="cost__value" />
+				<span class="cost__name"></span>
 			</label>
 		</template>
 

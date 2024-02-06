@@ -43,6 +43,7 @@ function renderDeckPanels() {
 		const itemNode = deckTemplate.content.cloneNode(true);
 		const countPlaceholder = itemNode.querySelector(".deck__count");
 		const traitPlaceholder = itemNode.querySelector(".traits");
+		const costPlaceholder = itemNode.querySelector(".costs");
 		const nameFilterPlaceholder = itemNode.querySelector(".name-filter");
 		const historyPlaceholder = itemNode.querySelector(".history");
 
@@ -54,8 +55,9 @@ function renderDeckPanels() {
 		itemNode.querySelector(".deck__index").value = index;
 
 		renderDeckCount(deck.availableCards.length, countPlaceholder);
-		renderTraitList(Array.from(deck.traits).sort(), traitPlaceholder);
 		renderNameFilter(deck.availableCards, nameFilterPlaceholder, index);
+		renderTraitList(Array.from(deck.traits).sort(), traitPlaceholder);
+		renderCostList(Array.from(deck.costs).sort(), costPlaceholder);
 		renderHistoryList(deck.playedCards, historyPlaceholder);
 
 		itemNode
@@ -71,6 +73,14 @@ function renderDeckPanels() {
 			itemNode.querySelector(".toggle-trait-filter").remove();
 		}
 
+		if (deck.costs.size > 0) {
+			itemNode
+				.querySelector(".toggle-cost-filter")
+				.addEventListener("click", toggleSectionByClassName.bind(itemNode.querySelector(".cost-filter")));
+		} else {
+			itemNode.querySelector(".toggle-cost-filter").remove();
+		}
+
 		fragment.appendChild(itemNode);
 	});
 	deckPlaceholder.replaceChildren(fragment);
@@ -78,18 +88,6 @@ function renderDeckPanels() {
 
 function renderDeckCount(count, countPlaceholder) {
 	countPlaceholder.textContent = count;
-}
-
-function renderTraitList(traits, traitPlaceholder) {
-	const traitTemplate = document.getElementById("traitItemTemplate");
-	const fragment = document.createDocumentFragment();
-	traits.forEach((trait) => {
-		const itemNode = traitTemplate.content.cloneNode(true);
-		itemNode.querySelector(".trait__value").value = trait;
-		itemNode.querySelector(".trait__name").textContent = trait;
-		fragment.appendChild(itemNode);
-	});
-	traitPlaceholder.replaceChildren(fragment);
 }
 
 function renderNameFilter(cards, nameFilterPlaceholder, id) {
@@ -105,6 +103,30 @@ function renderNameFilter(cards, nameFilterPlaceholder, id) {
 		fragment.appendChild(option);
 	});
 	nameSuggestionPlaceholder.replaceChildren(fragment);
+}
+
+function renderTraitList(traits, traitPlaceholder) {
+	const traitTemplate = document.getElementById("traitItemTemplate");
+	const fragment = document.createDocumentFragment();
+	traits.forEach((trait) => {
+		const itemNode = traitTemplate.content.cloneNode(true);
+		itemNode.querySelector(".trait__value").value = trait;
+		itemNode.querySelector(".trait__name").textContent = trait;
+		fragment.appendChild(itemNode);
+	});
+	traitPlaceholder.replaceChildren(fragment);
+}
+
+function renderCostList(costs, costPlaceholder) {
+	const costTemplate = document.getElementById("costItemTemplate");
+	const fragment = document.createDocumentFragment();
+	costs.forEach((cost) => {
+		const itemNode = costTemplate.content.cloneNode(true);
+		itemNode.querySelector(".cost__value").value = cost;
+		itemNode.querySelector(".cost__name").textContent = cost;
+		fragment.appendChild(itemNode);
+	});
+	costPlaceholder.replaceChildren(fragment);
 }
 
 function renderDrawnCard(card, drawnCardPlaceholder) {
@@ -174,9 +196,10 @@ function drawCard(event) {
 	const deck = decks[formData.get("deckIndex")];
 	const nameFilter = form.querySelector(".name-filter").style.display == "none" ? null : formData.get("nameFilter");
 	const traits = form.querySelector(".trait-filter").style.display == "none" ? null : formData.getAll("traits");
+	const costs = form.querySelector(".cost-filter").style.display == "none" ? null : formData.getAll("costs");
 	const isOr = !!formData.get("isOr");
 
-	const result = deck.drawCards(1, traits, isOr, nameFilter);
+	const result = deck.drawCards(1, traits, isOr, nameFilter, costs);
 
 	const drawnCardPlaceholder = form.querySelector(".newest-card");
 	const noDrawnCardMessage = form.querySelector(".no-newest-card");
