@@ -132,7 +132,11 @@ function renderMythosDeck() {
 }
 
 function renderMythosCount() {
-	document.querySelector(".mythos .deck__count").textContent = mythosDeck.availableCards.length;
+	setMythosCount(mythosDeck.availableCards.length);
+}
+
+function setMythosCount(count) {
+	document.querySelector(".mythos .deck__count").textContent = count;
 }
 
 function renderMythosHistoryList() {
@@ -146,20 +150,14 @@ function renderMythosHistoryList() {
 	document.querySelector(".mythos .history").replaceChildren(fragment);
 }
 
-function shuffleInMythos() {
-	mythosDeck.returnCardsToBottom([data]);
-	mythosDeck.shuffle();
-	renderMythosDeck();
-}
-
 function drawMythosCard() {
 	const result = mythosDeck.drawCards(1);
 	const drawnCardPlaceholder = document.querySelector(".mythos .newest-card");
 	const noDrawnCardMessage = document.querySelector(".mythos .no-newest-card");
 
 	if (result.length == 1) {
-		renderMythosDeck();
-		renderDrawnCard(result[0], drawnCardPlaceholder);
+		renderDrawnCard(result[0], drawnCardPlaceholder, false);
+		renderMythosDeck()
 
 		drawnCardPlaceholder.style.display = "block";
 		noDrawnCardMessage.style.display = "none";
@@ -167,6 +165,15 @@ function drawMythosCard() {
 		drawnCardPlaceholder.style.display = "none";
 		noDrawnCardMessage.style.display = "block";
 	}
+}
+
+async function shuffleMythosDeck() {
+	mythosDeck.shuffle();
+
+	// So that users know the deck has been shuffled, set the count to 0, delay half a second, then set the actual count
+	setMythosCount(0);
+	await new Promise(r => setTimeout(r, 500));
+	renderMythosCount();
 }
 
 function toggleMythosHistory() {

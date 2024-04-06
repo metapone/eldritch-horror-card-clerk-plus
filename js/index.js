@@ -54,13 +54,13 @@ function renderDeckPanels() {
 		itemNode.querySelector(".deck__subtitle").textContent = deck.subtitle;
 		itemNode.querySelector(".deck__index").value = index;
 
-		renderDeckCount(deck.availableCards.length, countPlaceholder);
+		setDeckCount(deck.availableCards.length, countPlaceholder);
 		renderNameFilter(deck.availableCards, nameFilterPlaceholder, index);
 		renderTraitList(Array.from(deck.traits).sort(), traitPlaceholder);
 		renderCostList(Array.from(deck.costs).sort(), costPlaceholder);
 		renderHistoryList(deck.playedCards, historyPlaceholder);
 
-		itemNode.querySelector(".shuffle").addEventListener("click", () => shuffleDeck(index));
+		itemNode.querySelector(".shuffle").addEventListener("click", () => shuffleDeckAsync(index, countPlaceholder));
 
 		itemNode
 			.querySelector(".toggle-name-filter")
@@ -88,7 +88,7 @@ function renderDeckPanels() {
 	deckPlaceholder.replaceChildren(fragment);
 }
 
-function renderDeckCount(count, countPlaceholder) {
+function setDeckCount(count, countPlaceholder) {
 	countPlaceholder.textContent = count;
 }
 
@@ -131,15 +131,21 @@ function renderCostList(costs, costPlaceholder) {
 	costPlaceholder.replaceChildren(fragment);
 }
 
-function renderDrawnCard(card, drawnCardPlaceholder) {
+function renderDrawnCard(card, drawnCardPlaceholder, sortTraits = true) {
 	const cardTemplate = document.getElementById("lastDrawnCardItemTemplate");
 	const itemNode = cardTemplate.content.cloneNode(true);
 	const itemTraitsNode = itemNode.querySelector(".last-drawn__traits");
 	const badgeNode = document.createElement("span");
-	badgeNode.classList.add("badge");
+	let traitList = Array.from(card.traits);
 
+	badgeNode.classList.add("badge");
 	itemNode.querySelector(".last-drawn__name").textContent = card.name;
-	Array.from(card.traits).sort().forEach(trait => {
+
+	if (sortTraits) {
+		traitList = traitList.sort();
+	}
+
+	traitList.forEach(trait => {
 		const traitNode = badgeNode.cloneNode();
 		traitNode.textContent = trait;
 		itemTraitsNode.appendChild(traitNode);
@@ -187,12 +193,17 @@ function shuffleIn() {
 	const form = document.querySelector(`form[name='${data.formName}']`);
 	const historyPlaceholder = form.querySelector(".history");
 	const countPlaceholder = form.querySelector(".deck__count");
-	renderDeckCount(deck.availableCards.length, countPlaceholder);
+	setDeckCount(deck.availableCards.length, countPlaceholder);
 	renderHistoryList(deck.playedCards, historyPlaceholder);
 }
 
-function shuffleDeck(deckIndex) {
+async function shuffleDeckAsync(deckIndex, countPlaceholder) {
 	decks[deckIndex].shuffle();
+
+	// So that users know the deck has been shuffled, set the count to 0, delay half a second, then set the actual count
+	setDeckCount(0, countPlaceholder);
+	await new Promise(r => setTimeout(r, 500));
+	setDeckCount(decks[deckIndex].availableCards.length, countPlaceholder);
 }
 
 function drawCard(event) {
@@ -212,7 +223,7 @@ function drawCard(event) {
 	if (result.length == 1) {
 		const historyPlaceholder = form.querySelector(".history");
 		const countPlaceholder = form.querySelector(".deck__count");
-		renderDeckCount(deck.availableCards.length, countPlaceholder);
+		setDeckCount(deck.availableCards.length, countPlaceholder);
 		renderDrawnCard(result[0], drawnCardPlaceholder);
 		renderHistoryList(deck.playedCards, historyPlaceholder);
 
