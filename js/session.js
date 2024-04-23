@@ -4,6 +4,7 @@ function saveGame() {
 			expansions,
 			decks,
 			mythosDeck,
+			boxMythosDeck
 		};
 		localStorage.setItem("Eldritch Horror Session", JSON.stringify(saveItem));
 	} catch (e) {
@@ -36,6 +37,11 @@ function loadDecks(savedItem) {
 	const savedMythos = savedItem.mythosDeck;
 	if (savedMythos) {
 		mythosDeck = new deck(savedMythos.name, savedMythos.subtitle, savedMythos.cssClass, savedMythos.availableCards, savedMythos.playedCards);
+	}
+
+	const savedBoxMythos = savedItem.boxMythosDeck;
+	if (savedBoxMythos) {
+		boxMythosDeck = new deck(savedBoxMythos.name, savedBoxMythos.subtitle, savedBoxMythos.cssClass, savedBoxMythos.availableCards, savedBoxMythos.playedCards);
 	}
 }
 

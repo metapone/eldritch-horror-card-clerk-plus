@@ -34,3 +34,22 @@
 .mythos-error {
 	color: red;
 }
+
+.mythos legend {
+	font-variant-caps: small-caps;
+}
+
+.mythos .traits {
+	margin-bottom: 10px;
+}
+
+.mythos .box-drawn {
+	display: flex;
+	gap: 10px;
+}
+
+.mythos .box-card {
+	flex-grow: 1;
+	margin-top: 0;
+	margin-bottom: 5px;
+}

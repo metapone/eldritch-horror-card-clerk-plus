@@ -22,6 +22,7 @@ function resetGlobalVariables() {
 	decks.length = 0;
 	mythosAvailable.length = 0;
 	mythosDeck = null;
+	boxMythosDeck = null;
 }
 
 function buildDecks() {

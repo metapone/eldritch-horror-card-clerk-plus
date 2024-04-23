@@ -124,8 +124,45 @@
 					Deck count: <span class="deck__count">0</span>.
 					<br />
 					<button type="button" onclick="drawMythosCard()">Draw</button>
-					<button type="button" onclick="shuffleMythosDeck()">Shuffle</button>
-					<button type="button" class="toggle-history" onclick="toggleMythosHistory()">Toggle History</button>
+					<button type="button" onclick="shuffleMythosDeckAsync()">Shuffle</button>
+					<button type="button" onclick="toggleMythosHistory()">Toggle History</button>
+					<button type="button" onclick="toggleMythosDrawFromBox()">Toggle Drawing from the Box</button>
+
+					<fieldset class="mythos-box" style="display: none">
+						<legend>Drawing from the Box</legend>
+						<div class="traits">
+							<label class="trait">
+								<input type="checkbox" name="traits" class="trait__value" value="Green">
+								<span class="trait__name">Green</span>
+							</label>
+							<label class="trait">
+								<input type="checkbox" name="traits" class="trait__value" value="Yellow">
+								<span class="trait__name">Yellow</span>
+							</label>
+							<label class="trait">
+								<input type="checkbox" name="traits" class="trait__value" value="Blue">
+								<span class="trait__name">Blue</span>
+							</label>
+							<label class="trait">
+								<input type="checkbox" name="traits" class="trait__value" value="Easy">
+								<span class="trait__name">Easy</span>
+							</label>
+							<label class="trait">
+								<input type="checkbox" name="traits" class="trait__value" value="Normal">
+								<span class="trait__name">Normal</span>
+							</label>
+							<label class="trait">
+								<input type="checkbox" name="traits" class="trait__value" value="Hard">
+								<span class="trait__name">Hard</span>
+							</label>
+						</div>
+						<button type="button" onclick="drawBoxMythosCard()">Draw from the Box</button>
+						<div class="box-drawn" style="display: none">
+							<div class="card box-card" onclick="revealBoxMythos()">Click to reveal</div>
+							<button type="button" onclick="discardBoxMythos()">Discard</button>
+							<button type="button" onclick="shuffleBoxMythosToDeckAsync()">Shuffle into the Mythos deck</button>
+						</div>
+					</fieldset>
 
 					<div class="last-drawn-card">
 						Last drawn:

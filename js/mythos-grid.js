@@ -88,6 +88,7 @@ function buildMythosDeck() {
 	}
 
 	mythosDeck = new deck("Mythos", "", "", deckCards);
+	boxMythosDeck = new deck("Box", "", "", mythosToUse);
 	renderInitMythosDeck();
 	saveGame();
 }
@@ -167,7 +168,7 @@ function drawMythosCard() {
 	}
 }
 
-async function shuffleMythosDeck() {
+async function shuffleMythosDeckAsync() {
 	mythosDeck.shuffle();
 
 	// So that users know the deck has been shuffled, set the count to 0, delay half a second, then set the actual count
@@ -257,4 +258,47 @@ function getCompositionByAncientOneId(id) {
 			}
 		}
 	}
+}
+
+function toggleMythosDrawFromBox() {
+	toggleSectionByClassName.bind(document.querySelector(".mythos-box"))();
+}
+
+function toggleBoxMythosCard(isVisible = true) {
+	document.querySelector(".box-drawn").style.display = isVisible ? "flex" : "none";
+}
+
+function drawBoxMythosCard() {
+	const form = document.querySelector("form.mythos");
+	const formData = new FormData(form);
+	const traits = formData.getAll("traits");
+	const result = boxMythosDeck.drawCards(1, traits);
+	const drawnCardPlaceholder = document.querySelector("form.mythos .box-card");
+	drawnCardPlaceholder.textContent = "Click to reveal";
+	drawnCardPlaceholder.setAttribute("realName", result[0].name);
+	drawnCardPlaceholder.setAttribute("cardId", result[0].id);
+	toggleBoxMythosCard(true);
+}
+
+function revealBoxMythos() {
+	const boxCardElement = document.querySelector("form.mythos .box-card")
+	boxCardElement.textContent = boxCardElement.getAttribute("realName");
+}
+
+function discardBoxMythos() {
+	const boxCardElement = document.querySelector("form.mythos .box-card")
+	const boxCardId = boxCardElement.getAttribute("cardId");
+	const boxCard = boxMythosDeck.playedCards.splice(boxMythosDeck.playedCards.findIndex(item => item.id === boxCardId), 1)[0];
+	mythosDeck.playedCards.push(boxCard);
+	toggleBoxMythosCard(false);
+	renderMythosHistoryList();
+}
+
+async function shuffleBoxMythosToDeckAsync() {
+	const boxCardElement = document.querySelector("form.mythos .box-card")
+	const boxCardId = boxCardElement.getAttribute("cardId");
+	const boxCard = boxMythosDeck.playedCards.splice(boxMythosDeck.playedCards.findIndex(item => item.id === boxCardId), 1)[0];
+	mythosDeck.availableCards.push(boxCard);
+	toggleBoxMythosCard(false);
+	await shuffleMythosDeckAsync();
 }
