@@ -7,6 +7,7 @@
 		<link rel="stylesheet" href="css/index.css" />
 		<link rel="stylesheet" href="css/logic-operator.css" />
 		<link rel="stylesheet" href="css/mythos-grid.css" />
+		<link rel="stylesheet" href="libraries/Dragula/dragula.min.css" />
 		<!-- Data -->
 		<script src="js/global_variables.js"></script>
 		<script src="js/data_expansion.js"></script>
@@ -207,7 +208,7 @@
 		</template>
 
 		<template id="deckItemTemplate">
-			<form class="deck">
+			<form class="deck" deckIndex="">
 				<fieldset>
 					<div><span class="deck__name"></span><span class="deck__subtitle"></span></div>
 					<input type="hidden" name="deckIndex" class="deck__index" />
@@ -219,6 +220,14 @@
 					<button type="button" class="toggle-trait-filter">Toggle Trait Filter</button>
 					<button type="button" class="toggle-cost-filter">Toggle Cost Filter</button>
 					<button type="button" class="toggle-history">Toggle History</button>
+					<button type="button" class="toggle-rearrange-top">Toggle Darrell's Action</button>
+
+					<fieldset class="rearrange-top" style="display: none">
+						<legend>Rearrange Top Cards</legend>
+						Drag to reorder. Topmost card of the deck is at the top of the list.
+						<div class="top-cards"></div>
+						<button type="button" class="rearrange-top-cards">Return cards to the deck</button>
+					</fieldset>
 
 					<div class="name-filter" style="display: none">
 						Name:
@@ -289,5 +298,7 @@
 		</template>
 
 		<script src="js/index_postRender.js"></script>
+		<script src="libraries/Dragula/dragula.min.js"></script>
+		<script src="js/rearrange_top_cards.js"></script>
 	</body>
 </html>

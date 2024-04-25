@@ -122,7 +122,8 @@ footer {
 	color: black;
 }
 
-.last-drawn, .card-history {
+.last-drawn,
+.card-history {
 	position: relative;
 	flex-wrap: wrap;
 	justify-content: flex-end;
@@ -133,11 +134,13 @@ footer {
 	padding-right: 20px; /* same width as .card__shuffleIn */
 }
 
-.last-drawn__name, .card__name {
+.last-drawn__name,
+.card__name {
 	flex: 1 0 auto;
 }
 
-.last-drawn__traits, .card__traits {
+.last-drawn__traits,
+.card__traits {
 	flex: 0 0 auto;
 }
 
@@ -181,7 +184,8 @@ footer {
 	white-space: nowrap;
 }
 
-.trait__name, .cost__name {
+.trait__name,
+.cost__name {
 	font-variant-caps: small-caps;
 	font-style: italic;
 	font-size: 19px;
@@ -225,4 +229,13 @@ footer {
 
 .uniqueAsset fieldset {
 	background-color: #d9b55f;
+}
+
+.rearrange-top {
+	margin-bottom: 10px;
+}
+
+.top-cards {
+	margin-top: 10px;
+	margin-bottom: 10px;
 }

@@ -2,6 +2,7 @@ deckData.push({
 	name: "Asset",
 	subtitle: " (Non-Unique)",
 	cssClass: "asset",
+	canRearrangeTop: true,
 	cardsByExpansions: [
 		{
 			expansionID: 0,

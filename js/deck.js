@@ -6,13 +6,15 @@ class deck {
 	playedCards = [];
 	traits = new Set();
 	costs = new Set();
+	canRearrangeTop = false;
 
-	constructor(name, subtitle, cssClass, availableCards, playedCards) {
+	constructor(name, subtitle, cssClass, availableCards, playedCards, canRearrangeTop) {
 		this.name = name;
 		this.subtitle = subtitle;
 		this.cssClass = cssClass;
 		this.availableCards = availableCards || [];
 		this.playedCards = playedCards || [];
+		this.canRearrangeTop = !!canRearrangeTop;
 		this.#createAttributeLists();
 	}
 

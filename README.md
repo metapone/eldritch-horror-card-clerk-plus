@@ -6,6 +6,6 @@ View at https://metapone.github.io/eldritch-horror-card-clerk-plus/
 Features:
 - Mythos Deck Builder with all Ancient One presets
 - Draw cards from decks or monster pile randomly with filters (partial name, trait, cost)
-- Deck manipulation (shuffle, discard, etc.)
+- Deck manipulation (shuffle, discard, etc.), including tricky ones like Darrell's
 - Drawn cards history
 - Save session

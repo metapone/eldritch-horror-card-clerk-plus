@@ -30,7 +30,7 @@ function buildDecks() {
 		const availableCards = data.cardsByExpansions
 			.filter((cardGroup) => expansions.includes(cardGroup.expansionID))
 			.flatMap((cardGroup) => cardGroup.cards);
-		const newDeck = new deck(data.name, data.subtitle, data.cssClass, availableCards);
+		const newDeck = new deck(data.name, data.subtitle, data.cssClass, availableCards, null, data.canRearrangeTop);
 		newDeck.shuffle();
 		decks.push(newDeck);
 	});
@@ -50,7 +50,13 @@ function renderDeckPanels() {
 
 		itemNode.querySelector(".deck").name = deck.name;
 		itemNode.querySelector(".deck").classList.add(deck.cssClass);
-		itemNode.querySelector("form").addEventListener("submit", drawCard);
+		itemNode.querySelector("form").addEventListener("submit", (event) => {
+			if (deck.canRearrangeTop) {
+				document.querySelector(`form[deckIndex='${index}'] .rearrange-top`).style.display = "none";
+			}
+			drawCard(event);
+		});
+		itemNode.querySelector("form").setAttribute("deckIndex", index);
 		itemNode.querySelector(".deck__name").textContent = deck.name;
 		itemNode.querySelector(".deck__subtitle").textContent = deck.subtitle;
 		itemNode.querySelector(".deck__index").value = index;
@@ -61,7 +67,12 @@ function renderDeckPanels() {
 		renderCostList(Array.from(deck.costs).sort(), costPlaceholder);
 		renderHistoryList(deck.playedCards, historyPlaceholder);
 
-		itemNode.querySelector(".shuffle").addEventListener("click", () => shuffleDeckAsync(index, countPlaceholder));
+		itemNode.querySelector(".shuffle").addEventListener("click", () => {
+			if (deck.canRearrangeTop) {
+				document.querySelector(`form[deckIndex='${index}'] .rearrange-top`).style.display = "none";
+			}
+			shuffleDeckAsync(index, countPlaceholder);
+		});
 
 		itemNode
 			.querySelector(".toggle-name-filter")
@@ -82,6 +93,14 @@ function renderDeckPanels() {
 				.addEventListener("click", toggleSectionByClassName.bind(itemNode.querySelector(".cost-filter")));
 		} else {
 			itemNode.querySelector(".toggle-cost-filter").remove();
+		}
+
+		if (deck.canRearrangeTop) {
+			itemNode.querySelector(".toggle-rearrange-top").addEventListener("click", () => renderRearrageTopCards(index));
+			itemNode.querySelector(".rearrange-top-cards").addEventListener("click", () => rearrangeTopCards(index));
+		} else {
+			itemNode.querySelector(".toggle-rearrange-top").remove();
+			itemNode.querySelector(".rearrange-top").remove();
 		}
 
 		fragment.appendChild(itemNode);
@@ -146,11 +165,11 @@ function renderDrawnCard(card, drawnCardPlaceholder, sortTraits = true) {
 		traitList = traitList.sort();
 	}
 
-	traitList.forEach(trait => {
+	traitList.forEach((trait) => {
 		const traitNode = badgeNode.cloneNode();
 		traitNode.textContent = trait;
 		itemTraitsNode.appendChild(traitNode);
-	})
+	});
 
 	drawnCardPlaceholder.replaceChildren(itemNode);
 }
@@ -173,12 +192,14 @@ function renderHistoryList(cardLists, historyPlaceholder) {
 		itemNode.querySelector(".card__name").textContent = card.name;
 
 		const itemTraitsNode = itemNode.querySelector(".card__traits");
-		Array.from(card.traits).sort().forEach(trait => {
-			const traitNode = badgeNode.cloneNode();
-			traitNode.textContent = trait;
-			itemTraitsNode.appendChild(traitNode);
-		})
-		
+		Array.from(card.traits)
+			.sort()
+			.forEach((trait) => {
+				const traitNode = badgeNode.cloneNode();
+				traitNode.textContent = trait;
+				itemTraitsNode.appendChild(traitNode);
+			});
+
 		itemNode.querySelector(".card__shuffleIn").addEventListener("click", shuffleIn.bind(shuffleInData)); // Assign shuffleInData to "this"
 		fragment.appendChild(itemNode);
 	});
@@ -203,7 +224,7 @@ async function shuffleDeckAsync(deckIndex, countPlaceholder) {
 
 	// So that users know the deck has been shuffled, set the count to 0, delay half a second, then set the actual count
 	setDeckCount(0, countPlaceholder);
-	await new Promise(r => setTimeout(r, 500));
+	await new Promise((r) => setTimeout(r, 500));
 	setDeckCount(decks[deckIndex].availableCards.length, countPlaceholder);
 }
 
@@ -250,7 +271,7 @@ function switchToView(viewId) {
 }
 
 function toggleSectionByClassName() {
-	if (this.style.display == "none") {
+	if (this.style.display === "none") {
 		this.style.display = "block";
 	} else {
 		this.style.display = "none";

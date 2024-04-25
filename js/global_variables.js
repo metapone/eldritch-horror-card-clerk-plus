@@ -19,3 +19,4 @@ const decks = []; // Store all normal decks in play. Array of "deck" objects.
 const mythosAvailable = []; // Store Mythos cards available (base + selected expansions). Array of "card" objects.
 let mythosDeck = null; // Store Mythos deck in play. "deck" object.
 let boxMythosDeck = null; // Store unused Mythos card. "deck" object.
+const drakes = {}; // Store dragula APIs using keys
