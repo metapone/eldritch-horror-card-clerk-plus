@@ -32,6 +32,9 @@ select {
 	font-family: "TeX Gyre Termes", "Times New Roman", serif;
 	font-size: 18px;
 	color: black;
+	max-width: 700px;
+	margin: auto;
+	padding: 5px;
 }
 
 button,
@@ -168,7 +171,7 @@ footer {
 	content: " ";
 	height: 15px;
 	width: 2px;
-	background-color: #333;
+	background-color: red;
 	top: 2px;
 }
 
