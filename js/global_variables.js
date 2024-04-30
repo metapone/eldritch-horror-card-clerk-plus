@@ -20,3 +20,4 @@ const mythosAvailable = []; // Store Mythos cards available (base + selected exp
 let mythosDeck = null; // Store Mythos deck in play. "deck" object.
 let boxMythosDeck = null; // Store unused Mythos card. "deck" object.
 const drakes = {}; // Store dragula APIs using keys
+let deckVisibility = {}; // Store deck visibility config. Object with properties in the format <index>: <visibility> e.g. { -1: true, 0: false }

@@ -36,7 +36,12 @@
 			<div id="expansions" class="expansions"></div>
 		</div>
 		<div id="mainView" class="view">
-			<fieldset class="deck">
+			<fieldset class="deck-visibility">
+				<div class="section__name">Toggle Deck Visibility</div>
+				<div class="section__decks"></div>
+			</fieldset>
+
+			<fieldset class="deck mythos-composition">
 				<div class="deck__name">Mythos Deck Composition</div>
 				<label for="ancientOne">Preset: </label>
 				<select name="ancientOne" onchange="settingPreset(event)"></select>
@@ -119,7 +124,7 @@
 				<div class="mythos-error"></div>
 			</fieldset>
 
-			<form class="deck mythos">
+			<form class="deck mythos" name="Mythos">
 				<fieldset>
 					<div class="deck__name">Mythos</div>
 					Deck count: <span class="deck__count">0</span>.
@@ -294,6 +299,13 @@
 				<div class="card__traits"></div>
 				<button type="button" class="card__shuffleIn"></button>
 			</div>
+		</template>
+
+		<template id="deckVisibilityItemTemplate">
+			<label class="deck-visibility-item">
+				<input type="checkbox" class="deck-visibility-item__index" />
+				<span class="deck-visibility-item__name"></span>
+			</label>
 		</template>
 
 		<script src="js/index_postRender.js"></script>

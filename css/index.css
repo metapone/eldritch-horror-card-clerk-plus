@@ -183,22 +183,26 @@ footer {
 	transform: rotate(-45deg);
 }
 
-.trait {
+.trait,
+.deck-visibility-item {
 	white-space: nowrap;
 }
 
 .trait__name,
-.cost__name {
+.cost__name,
+.deck-visibility-itemy__name {
 	font-variant-caps: small-caps;
 	font-style: italic;
 	font-size: 19px;
 }
 
-.deck {
+.deck,
+.deck-visibility {
 	margin-bottom: 20px;
 }
 
-.deck__name {
+.deck__name,
+.section__name {
 	font-size: 1.5em;
 	font-variant-caps: small-caps;
 	margin-bottom: 5px;

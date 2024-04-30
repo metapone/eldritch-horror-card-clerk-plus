@@ -14,6 +14,7 @@ function startNewGame() {
 	buildDecks();
 	renderDeckPanels();
 	renderMythosDeckPanel();
+	renderDeckVisibilityPanel();
 	saveGame();
 }
 
@@ -276,4 +277,53 @@ function toggleSectionByClassName() {
 	} else {
 		this.style.display = "none";
 	}
+}
+
+function renderDeckVisibilityPanel() {
+	const deckVisibiltyPlaceholder = document.getElementsByClassName("section__decks")[0];
+	const fragment = document.createDocumentFragment();
+	const deckList = [{ name: "Mythos", value: -1 }]; // Use -1 for Mythos since it's not included in the decks variable
+
+	decks.forEach((deck, index) => {
+		deckList.push({ name: deck.name, value: index });
+	});
+	deckList
+		.sort((a, b) => a.name.localeCompare(b.name))
+		.forEach((deck) => {
+			fragment.appendChild(createDeckVisibilityItem(deck.name, deck.value));
+		});
+	deckVisibiltyPlaceholder.replaceChildren(fragment);
+
+	function createDeckVisibilityItem(name, value) {
+		const deckVisibilityItemTemplate = document.getElementById("deckVisibilityItemTemplate");
+		const itemNode = deckVisibilityItemTemplate.content.cloneNode(true);
+		const text = itemNode.querySelector(".deck-visibility-item__name");
+		const checkbox = itemNode.querySelector(".deck-visibility-item__index");
+
+		text.textContent = name;
+		checkbox.value = value;
+		checkbox.checked = !(deckVisibility[value] === false); // If save doesn't have the specific index, treat it as true
+		checkbox.addEventListener("change", handleChangeDeckVisibility);
+		toggleDeckVisibility({ index: value, isVisible: checkbox.checked });
+		return itemNode;
+	}
+}
+
+function toggleDeckVisibility(visibility) {
+	if (visibility.index >= 0) {
+		// Regular deck
+		document.querySelector(`[deckindex='${visibility.index}']`).style.display = visibility.isVisible ? "block" : "none";
+	} else {
+		// Mythos
+		document.getElementsByClassName("mythos-composition")[0].style.display = visibility.isVisible ? "block" : "none";
+		document.getElementsByClassName("mythos")[0].style.display = visibility.isVisible && mythosDeck != null ? "block" : "none";
+	}
+
+	deckVisibility[visibility.index] = visibility.isVisible;
+	saveGame();
+}
+
+function handleChangeDeckVisibility(event) {
+	const checkbox = event.target;
+	toggleDeckVisibility({ index: checkbox.value, isVisible: checkbox.checked });
 }
