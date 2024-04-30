@@ -133,8 +133,8 @@ footer {
 	column-gap: 5px;
 }
 
-.card-history {
-	padding-right: 20px; /* same width as .card__shuffleIn */
+.card-history:not(.card-history--mythos) {
+	padding-right: 20px; /* same width as .card__shuffleIn, which Mythos deck doesn't have */
 }
 
 .last-drawn__name,
@@ -245,4 +245,16 @@ footer {
 .top-cards {
 	margin-top: 10px;
 	margin-bottom: 10px;
+}
+
+.green {
+	background-color: #467e25;
+}
+
+.yellow {
+	background-color: #e8b54b;
+}
+
+.blue {
+	background-color: #5870c4;
 }

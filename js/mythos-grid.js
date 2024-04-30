@@ -143,9 +143,20 @@ function setMythosCount(count) {
 function renderMythosHistoryList() {
 	const cardTemplate = document.getElementById("cardItemTemplate");
 	const fragment = document.createDocumentFragment();
-	mythosDeck.playedCards.toReversed().forEach((card, index) => {
+	const badgeNode = document.createElement("span");
+	badgeNode.classList.add("badge");
+
+	mythosDeck.playedCards.toReversed().forEach((card) => {
 		const itemNode = cardTemplate.content.cloneNode(true);
-		itemNode.querySelector(".card").textContent = card.name;
+		const itemTraitsNode = itemNode.querySelector(".card__traits");
+
+		itemNode.querySelector(".card__name").textContent = card.name;
+		Array.from(card.traits).forEach((trait) => {
+			const traitNode = badgeNode.cloneNode();
+			traitNode.classList.add(trait.toLowerCase());
+			traitNode.textContent = trait;
+			itemTraitsNode.appendChild(traitNode);
+		});
 		fragment.appendChild(itemNode);
 	});
 	document.querySelector(".mythos .history").replaceChildren(fragment);
@@ -157,8 +168,8 @@ function drawMythosCard() {
 	const noDrawnCardMessage = document.querySelector(".mythos .no-newest-card");
 
 	if (result.length == 1) {
-		renderDrawnCard(result[0], drawnCardPlaceholder, false);
-		renderMythosDeck()
+		renderDrawnCard(result[0], drawnCardPlaceholder, false, true);
+		renderMythosDeck();
 
 		drawnCardPlaceholder.style.display = "block";
 		noDrawnCardMessage.style.display = "none";
@@ -173,7 +184,7 @@ async function shuffleMythosDeckAsync() {
 
 	// So that users know the deck has been shuffled, set the count to 0, delay half a second, then set the actual count
 	setMythosCount(0);
-	await new Promise(r => setTimeout(r, 500));
+	await new Promise((r) => setTimeout(r, 500));
 	renderMythosCount();
 }
 
@@ -281,23 +292,29 @@ function drawBoxMythosCard() {
 }
 
 function revealBoxMythos() {
-	const boxCardElement = document.querySelector("form.mythos .box-card")
+	const boxCardElement = document.querySelector("form.mythos .box-card");
 	boxCardElement.textContent = boxCardElement.getAttribute("realName");
 }
 
 function discardBoxMythos() {
-	const boxCardElement = document.querySelector("form.mythos .box-card")
+	const boxCardElement = document.querySelector("form.mythos .box-card");
 	const boxCardId = boxCardElement.getAttribute("cardId");
-	const boxCard = boxMythosDeck.playedCards.splice(boxMythosDeck.playedCards.findIndex(item => item.id === boxCardId), 1)[0];
+	const boxCard = boxMythosDeck.playedCards.splice(
+		boxMythosDeck.playedCards.findIndex((item) => item.id === boxCardId),
+		1
+	)[0];
 	mythosDeck.playedCards.push(boxCard);
 	toggleBoxMythosCard(false);
 	renderMythosHistoryList();
 }
 
 async function shuffleBoxMythosToDeckAsync() {
-	const boxCardElement = document.querySelector("form.mythos .box-card")
+	const boxCardElement = document.querySelector("form.mythos .box-card");
 	const boxCardId = boxCardElement.getAttribute("cardId");
-	const boxCard = boxMythosDeck.playedCards.splice(boxMythosDeck.playedCards.findIndex(item => item.id === boxCardId), 1)[0];
+	const boxCard = boxMythosDeck.playedCards.splice(
+		boxMythosDeck.playedCards.findIndex((item) => item.id === boxCardId),
+		1
+	)[0];
 	mythosDeck.availableCards.push(boxCard);
 	toggleBoxMythosCard(false);
 	await shuffleMythosDeckAsync();

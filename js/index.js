@@ -152,7 +152,7 @@ function renderCostList(costs, costPlaceholder) {
 	costPlaceholder.replaceChildren(fragment);
 }
 
-function renderDrawnCard(card, drawnCardPlaceholder, sortTraits = true) {
+function renderDrawnCard(card, drawnCardPlaceholder, sortTraits = true, addBadgeClass = false) {
 	const cardTemplate = document.getElementById("lastDrawnCardItemTemplate");
 	const itemNode = cardTemplate.content.cloneNode(true);
 	const itemTraitsNode = itemNode.querySelector(".last-drawn__traits");
@@ -168,6 +168,11 @@ function renderDrawnCard(card, drawnCardPlaceholder, sortTraits = true) {
 
 	traitList.forEach((trait) => {
 		const traitNode = badgeNode.cloneNode();
+
+		if (addBadgeClass) {
+			traitNode.classList.add(trait.toLowerCase());
+		}
+
 		traitNode.textContent = trait;
 		itemTraitsNode.appendChild(traitNode);
 	});
