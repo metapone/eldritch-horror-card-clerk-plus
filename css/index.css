@@ -32,7 +32,7 @@ select {
 	font-family: "TeX Gyre Termes", "Times New Roman", serif;
 	font-size: 18px;
 	color: black;
-	max-width: 700px;
+	max-width: 800px;
 	margin: auto;
 	padding: 5px;
 }
@@ -221,12 +221,17 @@ footer {
 	color: white;
 }
 
+.asset fieldset {
+	background-color: #bf6c10;
+}
+
 .condition fieldset {
 	background-color: #aaa09f;
 }
 
-.asset fieldset {
-	background-color: #bf6c10;
+.monster fieldset {
+	background-color: #000000;
+	color: white;
 }
 
 .spell fieldset {
