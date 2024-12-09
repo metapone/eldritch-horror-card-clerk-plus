@@ -42,6 +42,18 @@ function renderTopCards(deckIndex) {
 	}
 
 	drawnCardPlaceholder.replaceChildren(topCardNode);
+	
+	// Overflow style is set to prevent mobile's screen scrolling while dragging on Blink
+	// See https://chromestatus.com/feature/5093566007214080
+	// touch-action: none doesn't work for some reason
+	for (let ele of document.getElementsByClassName("last-drawn")) {
+		ele.addEventListener("touchstart", () => {
+			document.body.setAttribute("style", "height: 100vh; overflow: hidden;");
+		});
+		ele.addEventListener("touchend", () => {
+			document.body.setAttribute("style", "");
+		});
+	}
 }
 
 function makeTopCardsDraggable(deckIndex) {
