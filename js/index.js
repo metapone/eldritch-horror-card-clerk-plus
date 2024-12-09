@@ -188,7 +188,7 @@ function renderHistoryList(cardLists, historyPlaceholder) {
 	const badgeNode = document.createElement("span");
 	badgeNode.classList.add("badge");
 
-	cardLists.toReversed().forEach((card, index) => {
+	Array.from(cardLists).reverse().forEach((card, index) => {
 		const shuffleInData = {
 			cardIndex: cardLists.length - 1 - index, // Because card list is reversed beforehand
 			deckID: deckIndex,
