@@ -20,6 +20,7 @@
 		<script src="js/data_spell.js"></script>
 		<script src="js/data_unique_asset.js"></script>
 		<script src="js/data_ancient_one.js"></script>
+		<script src="js/data_spaces.js"></script>
 		<!-- Logic -->
 		<script src="js/deck.js"></script>
 		<script src="js/index.js"></script>
@@ -40,6 +41,30 @@
 			<fieldset class="deck-visibility">
 				<div class="section__name">Toggle Deck Visibility</div>
 				<div class="section__decks"></div>
+			</fieldset>
+
+			<fieldset class="deck random-space">
+				<div class="deck__name">Random Space Selector</div>
+				<div class="random-space__toggles">
+					<label>
+						<input type="checkbox" class="random-space__toggle" data-board="Antarctica" />
+						Antarctica Sideboard
+					</label>
+					<label>
+						<input type="checkbox" class="random-space__toggle" data-board="Dreamlands" />
+						Dreamlands Sideboard
+					</label>
+					<label>
+						<input type="checkbox" class="random-space__toggle" data-board="Egypt" />
+						Egypt Sideboard
+					</label>
+				</div>
+				<button type="button" onclick="pickRandomSpace()">Pick Random Space</button>
+				<div class="last-drawn-card">
+					Last selected space:
+					<div class="no-newest-card">No space selected.</div>
+					<div class="newest-card"></div>
+				</div>
 			</fieldset>
 
 			<fieldset class="deck mythos-composition">

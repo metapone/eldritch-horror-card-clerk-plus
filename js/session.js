@@ -26,6 +26,7 @@ function loadGame() {
 		loadDecks(savedItem);
 		renderDeckPanels();
 		renderMythosDeckPanel();
+		renderRandomSpaceSection();
 		if (mythosDeck) {
 			renderInitMythosDeck();
 		}

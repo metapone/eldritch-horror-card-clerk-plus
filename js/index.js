@@ -14,6 +14,7 @@ function startNewGame() {
 	buildDecks();
 	renderDeckPanels();
 	renderMythosDeckPanel();
+	renderRandomSpaceSection();
 	renderDeckVisibilityPanel();
 	saveGame();
 }
@@ -107,6 +108,61 @@ function renderDeckPanels() {
 		fragment.appendChild(itemNode);
 	});
 	deckPlaceholder.replaceChildren(fragment);
+}
+
+// Random Space Selector
+function renderRandomSpaceSection() {
+	const section = document.querySelector(".random-space");
+	if (!section) return;
+
+	// Restore saved toggles (default: both off)
+	const toggles = section.querySelectorAll(".random-space__toggle");
+	toggles.forEach((t) => {
+		const key = `randomSpace.toggle.${t.dataset.board}`;
+		try {
+			const saved = JSON.parse(localStorage.getItem(key));
+			t.checked = saved === true; // default false
+		} catch {}
+		// persist on change
+		t.addEventListener("change", (e) => {
+			localStorage.setItem(key, JSON.stringify(e.target.checked));
+		});
+	});
+
+	// Clear last selection on initial render
+	const newest = section.querySelector(".newest-card");
+	const none = section.querySelector(".no-newest-card");
+	newest.textContent = "";
+	none.style.display = "block";
+	newest.style.display = "none";
+}
+
+function pickRandomSpace() {
+	const section = document.querySelector(".random-space");
+	if (!section) return;
+	const useAntarctica = section.querySelector(".random-space__toggle[data-board='Antarctica']").checked;
+	const useDreamlands = section.querySelector(".random-space__toggle[data-board='Dreamlands']").checked;
+	const useEgypt = section.querySelector(".random-space__toggle[data-board='Egypt']").checked;
+
+	let pool = [...(spacesData.base || [])];
+	if (useAntarctica) pool = pool.concat(spacesData.Antarctica || []);
+	if (useDreamlands) pool = pool.concat(spacesData.Dreamlands || []);
+	if (useEgypt) pool = pool.concat(spacesData.Egypt || []);
+
+	const newest = section.querySelector(".newest-card");
+	const none = section.querySelector(".no-newest-card");
+
+	if (pool.length === 0) {
+		newest.style.display = "none";
+		none.style.display = "block";
+		return;
+	}
+
+	const pick = pool[Math.floor(Math.random() * pool.length)];
+	newest.textContent = pick;
+	newest.classList.add("card", "last-drawn");
+	newest.style.display = "block";
+	none.style.display = "none";
 }
 
 function setDeckCount(count, countPlaceholder) {
