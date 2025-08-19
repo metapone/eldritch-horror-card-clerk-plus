@@ -1,5 +1,92 @@
+// --- Multi-session constants and helpers ---
+const SINGLE_SESSION_KEY = "Eldritch Horror Session"; // legacy
+const SESSIONS_INDEX_KEY = "EHC+ Sessions Index"; // array of { id, name, createdAt, updatedAt }
+const CURRENT_SESSION_ID_KEY = "EHC+ Current Session ID";
+
+function getSessionsIndex() {
+	let index = [];
+	try {
+		index = JSON.parse(localStorage.getItem(SESSIONS_INDEX_KEY)) || [];
+	} catch (_) {
+		index = [];
+	}
+	// Migrate legacy single save if present and no index exists
+	try {
+		const legacy = localStorage.getItem(SINGLE_SESSION_KEY);
+		if (legacy && index.length === 0) {
+			const id = generateSessionId();
+			const name = `Session ${new Date().toISOString()}`;
+			localStorage.setItem(sessionStorageKey(id), legacy);
+			index = [{ id, name, createdAt: Date.now(), updatedAt: Date.now() }];
+			localStorage.setItem(SESSIONS_INDEX_KEY, JSON.stringify(index));
+			localStorage.removeItem(SINGLE_SESSION_KEY);
+			localStorage.setItem(CURRENT_SESSION_ID_KEY, id);
+		}
+	} catch (_) {}
+	return index;
+}
+
+function setSessionsIndex(index) {
+	localStorage.setItem(SESSIONS_INDEX_KEY, JSON.stringify(index));
+}
+
+function sessionStorageKey(id) {
+	return `EHC+ Session:${id}`;
+}
+
+function generateSessionId() {
+	// Simple unique id: timestamp + random
+	return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function getCurrentSessionId() {
+	return localStorage.getItem(CURRENT_SESSION_ID_KEY);
+}
+
+function setCurrentSessionId(id) {
+	if (id) {
+		localStorage.setItem(CURRENT_SESSION_ID_KEY, id);
+	} else {
+		localStorage.removeItem(CURRENT_SESSION_ID_KEY);
+	}
+}
+
+function createNewSession(name) {
+	const id = generateSessionId();
+	const now = Date.now();
+	const index = getSessionsIndex();
+	index.push({ id, name: name || `Session ${new Date(now).toLocaleString()}`, createdAt: now, updatedAt: now });
+	setSessionsIndex(index);
+	setCurrentSessionId(id);
+	return id;
+}
+
+function updateSessionTimestamp(id) {
+	const index = getSessionsIndex();
+	const entry = index.find((s) => s.id === id);
+	if (entry) {
+		entry.updatedAt = Date.now();
+		setSessionsIndex(index);
+	}
+}
+
+function renameSession(id, newName) {
+	const index = getSessionsIndex();
+	const entry = index.find((s) => s.id === id);
+	if (entry) {
+		entry.name = newName;
+		setSessionsIndex(index);
+		renderSavedSessions();
+	}
+}
+
+// --- Save / Load / Delete APIs ---
 function saveGame() {
 	try {
+		const currentId = getCurrentSessionId();
+		if (!currentId) {
+			return; // not in a named session yet
+		}
 		const saveItem = {
 			expansions,
 			decks,
@@ -7,20 +94,31 @@ function saveGame() {
 			mythosDeck,
 			boxMythosDeck,
 		};
-		localStorage.setItem("Eldritch Horror Session", JSON.stringify(saveItem));
+		localStorage.setItem(sessionStorageKey(currentId), JSON.stringify(saveItem));
+		updateSessionTimestamp(currentId);
+		// Update UI timestamps if on start screen
+		if (document.getElementById("savedSessions")) {
+			renderSavedSessions();
+		}
 	} catch (e) {
 		console.log(e);
 	}
 }
 
-function loadGame() {
+function loadGame(sessionId = null) {
 	try {
-		const savedItem = JSON.parse(localStorage.getItem("Eldritch Horror Session"));
-		if (!savedItem) {
-			return;
+		let id = sessionId;
+		if (!id) {
+			// Pick most recently updated session
+			const index = getSessionsIndex();
+			if (index.length === 0) return;
+			index.sort((a, b) => (b.updatedAt ?? b.createdAt) - (a.updatedAt ?? a.createdAt));
+			id = index[0].id;
 		}
+		const savedItem = JSON.parse(localStorage.getItem(sessionStorageKey(id)));
+		if (!savedItem) return;
 
-		deckVisibility = savedItem.deckVisibility;
+		deckVisibility = savedItem.deckVisibility || {};
 		resetGlobalVariables();
 		loadExpansions(savedItem);
 		loadDecks(savedItem);
@@ -30,7 +128,26 @@ function loadGame() {
 			renderInitMythosDeck();
 		}
 		renderDeckVisibilityPanel();
+		setCurrentSessionId(id);
 		switchToView("mainView");
+	} catch (e) {
+		console.log(e);
+	}
+}
+
+function deleteGame(sessionId) {
+	try {
+		const index = getSessionsIndex();
+		const i = index.findIndex((s) => s.id === sessionId);
+		if (i === -1) return;
+		localStorage.removeItem(sessionStorageKey(sessionId));
+		index.splice(i, 1);
+		setSessionsIndex(index);
+		if (getCurrentSessionId() === sessionId) {
+			setCurrentSessionId(null);
+			switchToView("startView");
+		}
+		renderSavedSessions();
 	} catch (e) {
 		console.log(e);
 	}
@@ -66,3 +183,96 @@ function loadExpansions(savedItem) {
 		expansionsSelected[i].checked = expansions.includes(Number(expansionsSelected[i].value));
 	}
 }
+
+// --- UI: Saved Sessions List (Start View) ---
+function renderSavedSessions() {
+	const container = document.getElementById("savedSessions");
+	if (!container) return;
+	const listEl = container.querySelector(".saved-sessions__list");
+	const emptyEl = container.querySelector(".saved-sessions__empty");
+	const index = getSessionsIndex();
+
+	if (!index || index.length === 0) {
+		listEl.replaceChildren();
+		emptyEl.style.display = "block";
+		return;
+	}
+
+	emptyEl.style.display = "none";
+	// Build table structure
+	const table = document.createElement("table");
+	table.className = "saved-sessions__table";
+
+	const thead = document.createElement("thead");
+	const headRow = document.createElement("tr");
+	["Name", "Updated", "Actions"].forEach((h) => {
+		const th = document.createElement("th");
+		th.textContent = h;
+		headRow.appendChild(th);
+	});
+	thead.appendChild(headRow);
+	table.appendChild(thead);
+
+	const tbody = document.createElement("tbody");
+	index
+		.slice()
+		.sort((a, b) => (b.updatedAt ?? b.createdAt) - (a.updatedAt ?? a.createdAt))
+		.forEach((s) => {
+			const tr = document.createElement("tr");
+
+			const nameTd = document.createElement("td");
+			const nameSpan = document.createElement("span");
+			nameSpan.className = "saved-session__name";
+			nameSpan.textContent = s.name;
+			nameSpan.title = new Date(s.updatedAt || s.createdAt).toLocaleString("en-CA");
+			nameTd.appendChild(nameSpan);
+
+			const dateTd = document.createElement("td");
+			// Get updated date in YYYY-MM-DD HH:MM:SS AM/PM localtime format
+			const updatedStr = new Date(s.updatedAt || s.createdAt).toLocaleString("en-CA");
+			const metaSpan = document.createElement("span");
+			metaSpan.className = "saved-session__meta";
+			metaSpan.textContent = updatedStr;
+			dateTd.appendChild(metaSpan);
+
+			const actionsTd = document.createElement("td");
+			const openBtn = document.createElement("button");
+			openBtn.type = "button";
+			openBtn.textContent = "Load";
+			openBtn.addEventListener("click", () => loadGame(s.id));
+
+			const renameBtn = document.createElement("button");
+			renameBtn.type = "button";
+			renameBtn.textContent = "Rename";
+			renameBtn.addEventListener("click", () => {
+				const newName = prompt("Rename session:", s.name);
+				if (newName && newName.trim()) renameSession(s.id, newName.trim());
+			});
+
+			const deleteBtn = document.createElement("button");
+			deleteBtn.type = "button";
+			deleteBtn.textContent = "Delete";
+			deleteBtn.addEventListener("click", () => {
+				if (confirm(`Delete session "${s.name}"? This cannot be undone.`)) {
+					deleteGame(s.id);
+				}
+			});
+
+			actionsTd.appendChild(openBtn);
+			actionsTd.appendChild(renameBtn);
+			actionsTd.appendChild(deleteBtn);
+
+			tr.appendChild(nameTd);
+			tr.appendChild(dateTd);
+			tr.appendChild(actionsTd);
+			tbody.appendChild(tr);
+		});
+	table.appendChild(tbody);
+
+	listEl.replaceChildren(table);
+}
+
+// Render session list on page load
+document.addEventListener("DOMContentLoaded", () => {
+	renderSavedSessions();
+});
