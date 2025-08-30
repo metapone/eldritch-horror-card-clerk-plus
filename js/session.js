@@ -1,7 +1,7 @@
 // --- Multi-session constants and helpers ---
 const SINGLE_SESSION_KEY = "Eldritch Horror Session"; // legacy
-const SESSIONS_INDEX_KEY = "EHC+ Sessions Index"; // array of { id, name, createdAt, updatedAt }
-const CURRENT_SESSION_ID_KEY = "EHC+ Current Session ID";
+const SESSIONS_INDEX_KEY = "EHCC+ Sessions Index"; // array of { id, name, createdAt, updatedAt }
+const CURRENT_SESSION_ID_KEY = "EHCC+ Current Session ID";
 
 function getSessionsIndex() {
 	let index = [];
@@ -15,14 +15,16 @@ function getSessionsIndex() {
 		const legacy = localStorage.getItem(SINGLE_SESSION_KEY);
 		if (legacy && index.length === 0) {
 			const id = generateSessionId();
-			const name = `Session ${new Date().toISOString()}`;
+			const name = `Session 1`;
 			localStorage.setItem(sessionStorageKey(id), legacy);
 			index = [{ id, name, createdAt: Date.now(), updatedAt: Date.now() }];
 			localStorage.setItem(SESSIONS_INDEX_KEY, JSON.stringify(index));
-			localStorage.removeItem(SINGLE_SESSION_KEY);
 			localStorage.setItem(CURRENT_SESSION_ID_KEY, id);
+			localStorage.removeItem(SINGLE_SESSION_KEY);
 		}
-	} catch (_) {}
+	} catch (e) {
+		console.error("Error migrating legacy session:", e);
+	}
 	return index;
 }
 
@@ -52,13 +54,20 @@ function setCurrentSessionId(id) {
 }
 
 function createNewSession(name) {
-	const id = generateSessionId();
-	const now = Date.now();
-	const index = getSessionsIndex();
-	index.push({ id, name: name || `Session ${new Date(now).toLocaleString()}`, createdAt: now, updatedAt: now });
-	setSessionsIndex(index);
-	setCurrentSessionId(id);
-	return id;
+	try {
+		const id = generateSessionId();
+		const now = Date.now();
+		const index = getSessionsIndex();
+		index.push({ id, name: name || `Session ${new Date(now).toISOString()}`, createdAt: now, updatedAt: now });
+		setSessionsIndex(index);
+		setCurrentSessionId(id);
+		renderCurrentSessionBanner();
+		return id;
+	} catch (e) {
+		alert("Error creating session. Please refresh the page and try again.");
+		console.error("Session creation error:", e);
+		return null;
+	}
 }
 
 function updateSessionTimestamp(id) {
@@ -77,6 +86,7 @@ function renameSession(id, newName) {
 		entry.name = newName;
 		setSessionsIndex(index);
 		renderSavedSessions();
+		renderCurrentSessionBanner();
 	}
 }
 
@@ -85,7 +95,7 @@ function saveGame() {
 	try {
 		const currentId = getCurrentSessionId();
 		if (!currentId) {
-			return; // not in a named session yet
+			throw new Error("No current session ID");
 		}
 		const saveItem = {
 			expansions,
@@ -96,12 +106,9 @@ function saveGame() {
 		};
 		localStorage.setItem(sessionStorageKey(currentId), JSON.stringify(saveItem));
 		updateSessionTimestamp(currentId);
-		// Update UI timestamps if on start screen
-		if (document.getElementById("savedSessions")) {
-			renderSavedSessions();
-		}
 	} catch (e) {
-		console.log(e);
+		alert("Error saving game. Please refresh the page and try again.");
+		console.error("Session save error:", e);
 	}
 }
 
@@ -111,15 +118,20 @@ function loadGame(sessionId = null) {
 		if (!id) {
 			// Pick most recently updated session
 			const index = getSessionsIndex();
-			if (index.length === 0) return;
+			if (index.length === 0) {
+				return;
+			}
 			index.sort((a, b) => (b.updatedAt ?? b.createdAt) - (a.updatedAt ?? a.createdAt));
 			id = index[0].id;
 		}
 		const savedItem = JSON.parse(localStorage.getItem(sessionStorageKey(id)));
-		if (!savedItem) return;
+		if (!savedItem) {
+			return;
+		}
 
-		deckVisibility = savedItem.deckVisibility || {};
+		// Reset runtime state, then apply saved values
 		resetGlobalVariables();
+		deckVisibility = savedItem.deckVisibility || {};
 		loadExpansions(savedItem);
 		loadDecks(savedItem);
 		renderDeckPanels();
@@ -127,8 +139,10 @@ function loadGame(sessionId = null) {
 		if (mythosDeck) {
 			renderInitMythosDeck();
 		}
-		renderDeckVisibilityPanel();
+		// Set current session before any UI triggers a save
 		setCurrentSessionId(id);
+		renderCurrentSessionBanner();
+		renderDeckVisibilityPanel();
 		switchToView("mainView");
 	} catch (e) {
 		console.log(e);
@@ -139,12 +153,15 @@ function deleteGame(sessionId) {
 	try {
 		const index = getSessionsIndex();
 		const i = index.findIndex((s) => s.id === sessionId);
-		if (i === -1) return;
+		if (i === -1) {
+			return;
+		}
 		localStorage.removeItem(sessionStorageKey(sessionId));
 		index.splice(i, 1);
 		setSessionsIndex(index);
 		if (getCurrentSessionId() === sessionId) {
 			setCurrentSessionId(null);
+			renderCurrentSessionBanner();
 			switchToView("startView");
 		}
 		renderSavedSessions();
@@ -187,7 +204,9 @@ function loadExpansions(savedItem) {
 // --- UI: Saved Sessions List (Start View) ---
 function renderSavedSessions() {
 	const container = document.getElementById("savedSessions");
-	if (!container) return;
+	if (!container) {
+		return;
+	}
 	const listEl = container.querySelector(".saved-sessions__list");
 	const emptyEl = container.querySelector(".saved-sessions__empty");
 	const index = getSessionsIndex();
@@ -275,4 +294,32 @@ function renderSavedSessions() {
 // Render session list on page load
 document.addEventListener("DOMContentLoaded", () => {
 	renderSavedSessions();
+	renderCurrentSessionBanner();
 });
+
+// --- UI: Current Session Banner ---
+function getCurrentSessionName() {
+	const id = getCurrentSessionId();
+	if (!id) return {
+		name: null
+	};
+	const index = getSessionsIndex();
+	const entry = index.find((s) => s.id === id);
+	return entry ? entry.name : null;
+}
+
+function renderCurrentSessionBanner() {
+	const banner = document.getElementById("currentSessionBanner");
+	const nameEl = document.getElementById("currentSessionName");
+	if (!banner || !nameEl) {
+		return;
+	}
+	const name = getCurrentSessionName();
+	if (name) {
+		nameEl.textContent = name;
+		banner.style.display = "block";
+	} else {
+		nameEl.textContent = "";
+		banner.style.display = "none";
+	}
+}
