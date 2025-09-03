@@ -224,6 +224,23 @@
 			</label>
 		</template>
 
+		<template id="savedSessionsTemplate">
+			<table class="saved-sessions__table">
+				<thead><tr><th>Name</th><th>Updated</th><th>Actions</th></tr></thead>
+				<tbody>
+					<tr>
+						<td><span class="saved-session__name"></span></td>
+						<td><span class="saved-session__meta"></span></td>
+						<td>
+							<button type="button">Load</button>
+							<button type="button">Rename</button>
+							<button type="button">Delete</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</template>
+
 		<template id="deckItemTemplate">
 			<form class="deck" deckIndex="">
 				<fieldset>

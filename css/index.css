@@ -264,11 +264,6 @@ footer {
 	background-color: #5870c4;
 }
 
-/* Saved Sessions: space between Load / Rename / Delete buttons */
-.saved-sessions__table td button + button {
-	margin-left: 5px;
-}
-
 /* Saved Sessions: inner borders between cells (no outer border) */
 .saved-sessions__table {
 	width: 100%;

@@ -218,77 +218,56 @@ function renderSavedSessions() {
 	}
 
 	emptyEl.style.display = "none";
-	// Build table structure
-	const table = document.createElement("table");
-	table.className = "saved-sessions__table";
 
-	const thead = document.createElement("thead");
-	const headRow = document.createElement("tr");
-	["Name", "Updated", "Actions"].forEach((h) => {
-		const th = document.createElement("th");
-		th.textContent = h;
-		headRow.appendChild(th);
-	});
-	thead.appendChild(headRow);
-	table.appendChild(thead);
+	// Use template to build the table and rows
+	const template = document.getElementById("savedSessionsTemplate");
+	if (!template) {
+		// Fallback: if template missing, just clear and show nothing to avoid errors
+		listEl.replaceChildren();
+		return;
+	}
 
-	const tbody = document.createElement("tbody");
+	const tableFrag = template.content.cloneNode(true);
+	const tableEl = tableFrag.querySelector(".saved-sessions__table");
+	const tbody = tableFrag.querySelector("tbody");
+	const rowTemplate = tbody.querySelector("tr");
+
+	// Clear tbody before populating
+	tbody.replaceChildren();
+
 	index
 		.slice()
 		.sort((a, b) => (b.updatedAt ?? b.createdAt) - (a.updatedAt ?? a.createdAt))
 		.forEach((s) => {
-			const tr = document.createElement("tr");
+			const tr = rowTemplate.cloneNode(true);
+			const nameSpan = tr.querySelector(".saved-session__name");
+			const metaSpan = tr.querySelector(".saved-session__meta");
+			const buttons = tr.querySelectorAll("button");
 
-			const nameTd = document.createElement("td");
-			const nameSpan = document.createElement("span");
-			nameSpan.className = "saved-session__name";
-			nameSpan.textContent = s.name;
-			nameSpan.title = new Date(s.updatedAt || s.createdAt).toLocaleString("en-CA");
-			nameTd.appendChild(nameSpan);
-
-			const dateTd = document.createElement("td");
-			// Get updated date in YYYY-MM-DD HH:MM:SS AM/PM localtime format
 			const updatedStr = new Date(s.updatedAt || s.createdAt).toLocaleString("en-CA");
-			const metaSpan = document.createElement("span");
-			metaSpan.className = "saved-session__meta";
+			nameSpan.textContent = s.name;
+			nameSpan.title = updatedStr;
 			metaSpan.textContent = updatedStr;
-			dateTd.appendChild(metaSpan);
 
-			const actionsTd = document.createElement("td");
-			const openBtn = document.createElement("button");
-			openBtn.type = "button";
-			openBtn.textContent = "Load";
-			openBtn.addEventListener("click", () => loadGame(s.id));
+			const [loadBtn, renameBtn, deleteBtn] = buttons;
+			if (loadBtn) loadBtn.addEventListener("click", () => loadGame(s.id));
+			if (renameBtn)
+				renameBtn.addEventListener("click", () => {
+					const newName = prompt("Rename session:", s.name);
+					if (newName && newName.trim()) renameSession(s.id, newName.trim());
+				});
+			if (deleteBtn)
+				deleteBtn.addEventListener("click", () => {
+					if (confirm(`Delete session "${s.name}"? This cannot be undone.`)) {
+						deleteGame(s.id);
+					}
+				});
 
-			const renameBtn = document.createElement("button");
-			renameBtn.type = "button";
-			renameBtn.textContent = "Rename";
-			renameBtn.addEventListener("click", () => {
-				const newName = prompt("Rename session:", s.name);
-				if (newName && newName.trim()) renameSession(s.id, newName.trim());
-			});
-
-			const deleteBtn = document.createElement("button");
-			deleteBtn.type = "button";
-			deleteBtn.textContent = "Delete";
-			deleteBtn.addEventListener("click", () => {
-				if (confirm(`Delete session "${s.name}"? This cannot be undone.`)) {
-					deleteGame(s.id);
-				}
-			});
-
-			actionsTd.appendChild(openBtn);
-			actionsTd.appendChild(renameBtn);
-			actionsTd.appendChild(deleteBtn);
-
-			tr.appendChild(nameTd);
-			tr.appendChild(dateTd);
-			tr.appendChild(actionsTd);
 			tbody.appendChild(tr);
 		});
-	table.appendChild(tbody);
 
-	listEl.replaceChildren(table);
+	// Replace current list with the built table
+	listEl.replaceChildren(tableEl);
 }
 
 // Render session list on page load
