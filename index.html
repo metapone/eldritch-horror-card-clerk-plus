@@ -36,6 +36,7 @@
 			<div>Your progress is automatically saved as you interact with the website.</div>
 			<div id="savedSessions" class="saved-sessions">
 				<div class="section__name">Saved Sessions</div>
+				<button type="button" onclick="deleteAllSessions()">Delete All Sessions</button>
 				<div class="saved-sessions__empty">No saved sessions yet.</div>
 				<div class="saved-sessions__list"></div>
 			</div>
@@ -226,7 +227,7 @@
 
 		<template id="savedSessionsTemplate">
 			<table class="saved-sessions__table">
-				<thead><tr><th>Name</th><th>Updated</th><th>Actions</th></tr></thead>
+				<thead><tr><th>Name</th><th>Updated</th><th>Actions <button type="button" onclick="deleteAllSessions()">Delete All Sessions</button></th></tr></thead>
 				<tbody>
 					<tr>
 						<td><span class="saved-session__name"></span></td>

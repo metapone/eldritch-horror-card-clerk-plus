@@ -170,6 +170,27 @@ function deleteGame(sessionId) {
 	}
 }
 
+function deleteAllSessions() {
+	try {
+		const index = getSessionsIndex();
+		if (!index || index.length === 0) return;
+		if (!confirm("Delete ALL sessions? This cannot be undone.")) return;
+
+		// Remove all session payloads
+		index.forEach((s) => localStorage.removeItem(sessionStorageKey(s.id)));
+		// Clear index and current pointer
+		localStorage.removeItem(SESSIONS_INDEX_KEY);
+		setCurrentSessionId(null);
+		renderCurrentSessionBanner();
+
+		// Update UI
+		renderSavedSessions();
+		switchToView("startView");
+	} catch (e) {
+		console.log(e);
+	}
+}
+
 function loadDecks(savedItem) {
 	savedItem.decks.forEach((item) => {
 		decks.push(new deck(item.name, item.subtitle, item.cssClass, item.availableCards, item.playedCards));
