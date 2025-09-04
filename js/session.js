@@ -173,8 +173,12 @@ function deleteGame(sessionId) {
 function deleteAllSessions() {
 	try {
 		const index = getSessionsIndex();
-		if (!index || index.length === 0) return;
-		if (!confirm("Delete ALL sessions? This cannot be undone.")) return;
+		if (!index || index.length === 0) {
+			return;
+		}
+		if (!confirm("Delete ALL sessions? This cannot be undone.")) {
+			return;
+		}
 
 		// Remove all session payloads
 		index.forEach((s) => localStorage.removeItem(sessionStorageKey(s.id)));
@@ -230,15 +234,22 @@ function renderSavedSessions() {
 	}
 	const listEl = container.querySelector(".saved-sessions__list");
 	const emptyEl = container.querySelector(".saved-sessions__empty");
+	const deleteAllBtn = document.getElementById("deleteAllSessionsButton");
 	const index = getSessionsIndex();
 
 	if (!index || index.length === 0) {
 		listEl.replaceChildren();
 		emptyEl.style.display = "block";
+		if (deleteAllBtn) {
+			deleteAllBtn.style.display = "none";
+		}
 		return;
 	}
 
 	emptyEl.style.display = "none";
+	if (deleteAllBtn) {
+		deleteAllBtn.style.display = "inline-block";
+	}
 
 	// Use template to build the table and rows
 	const template = document.getElementById("savedSessionsTemplate");
@@ -271,18 +282,22 @@ function renderSavedSessions() {
 			metaSpan.textContent = updatedStr;
 
 			const [loadBtn, renameBtn, deleteBtn] = buttons;
-			if (loadBtn) loadBtn.addEventListener("click", () => loadGame(s.id));
-			if (renameBtn)
+			if (loadBtn) {
+				loadBtn.addEventListener("click", () => loadGame(s.id));
+			}
+			if (renameBtn) {
 				renameBtn.addEventListener("click", () => {
 					const newName = prompt("Rename session:", s.name);
 					if (newName && newName.trim()) renameSession(s.id, newName.trim());
 				});
-			if (deleteBtn)
+			}
+			if (deleteBtn) {
 				deleteBtn.addEventListener("click", () => {
 					if (confirm(`Delete session "${s.name}"? This cannot be undone.`)) {
 						deleteGame(s.id);
 					}
 				});
+			}
 
 			tbody.appendChild(tr);
 		});
