@@ -23,15 +23,17 @@ class deck {
 		saveGame();
 	}
 
-	drawCards(count, traitsFilter, isOr, nameFilter, costsFilter) {
+	drawCards(count, traitsFilter, isOr, nameFilter, nameFilterExcluded, costsFilter) {
 		const drawnCards = [];
 		const searchString = !nameFilter ? "" : nameFilter.trim();
+		const searchStringExcluded = !nameFilterExcluded ? "" : nameFilterExcluded.trim();
 		let filteredCardIndexes = [];
 
 		for (let i = 0; i < this.availableCards.length; i++) {
 			const card = this.availableCards[i];
 
 			if (searchString.length > 0 && !card.name.toLowerCase().includes(searchString.toLowerCase())) continue;
+			if (searchStringExcluded.length > 0 && card.name.toLowerCase().includes(searchStringExcluded.toLowerCase())) continue;
 
 			if (!!traitsFilter && traitsFilter.length > 0) {
 				if (isOr) {

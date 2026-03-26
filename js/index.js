@@ -114,11 +114,11 @@ function setDeckCount(count, countPlaceholder) {
 }
 
 function renderNameFilter(cards, nameFilterPlaceholder, id) {
-	const nameInputPlaceholder = nameFilterPlaceholder.querySelector(".name-filter__input");
+	const nameInputPlaceholders = nameFilterPlaceholder.querySelectorAll(".name-filter__input");
 	const nameSuggestionPlaceholder = nameFilterPlaceholder.querySelector(".name-filter__suggestion");
 	const fragment = document.createDocumentFragment();
 
-	nameInputPlaceholder.setAttribute("list", `nameFilter${id}`);
+	nameInputPlaceholders.forEach((placeholder) => placeholder.setAttribute("list", `nameFilter${id}`));
 	nameSuggestionPlaceholder.setAttribute("id", `nameFilter${id}`);
 
 	cards.forEach((card) => {
@@ -240,11 +240,12 @@ function drawCard(event) {
 	const formData = new FormData(form);
 	const deck = decks[formData.get("deckIndex")];
 	const nameFilter = form.querySelector(".name-filter").style.display == "none" ? null : formData.get("nameFilter");
+	const nameFilterExcluded = form.querySelector(".name-filter").style.display == "none" ? null : formData.get("nameFilterExcluded");
 	const traits = form.querySelector(".trait-filter").style.display == "none" ? null : formData.getAll("traits");
 	const costs = form.querySelector(".cost-filter").style.display == "none" ? null : formData.getAll("costs");
 	const isOr = !!formData.get("isOr");
 
-	const result = deck.drawCards(1, traits, isOr, nameFilter, costs);
+	const result = deck.drawCards(1, traits, isOr, nameFilter, nameFilterExcluded, costs);
 
 	const drawnCardPlaceholder = form.querySelector(".newest-card");
 	const noDrawnCardMessage = form.querySelector(".no-newest-card");

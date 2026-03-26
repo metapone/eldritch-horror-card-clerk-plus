@@ -83,6 +83,15 @@ h1 {
 	font-size: 16px;
 }
 
+.name-filter > div + div {
+	margin-top: 5px;
+}
+
+.name-filter__input--inverted {
+	background-color: black;
+	color: white;
+}
+
 footer {
 	margin-top: 30px;
 	margin-bottom: 20px;
