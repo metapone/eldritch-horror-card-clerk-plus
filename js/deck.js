@@ -23,17 +23,18 @@ class deck {
 		saveGame();
 	}
 
-	drawCards(count, traitsFilter, isOr, nameFilter, nameFilterExcluded, costsFilter) {
+	drawCards(count, traitsFilter, isOr, nameFilter, nameFiltersExcluded, costsFilter) {
 		const drawnCards = [];
-		const searchString = !nameFilter ? "" : nameFilter.trim();
-		const searchStringExcluded = !nameFilterExcluded ? "" : nameFilterExcluded.trim();
+		const searchString = !nameFilter ? "" : nameFilter.trim().toLowerCase();
+		const excludedStrings = !nameFiltersExcluded ? [] : nameFiltersExcluded.map((s) => s.trim().toLowerCase());
 		let filteredCardIndexes = [];
 
 		for (let i = 0; i < this.availableCards.length; i++) {
 			const card = this.availableCards[i];
+			const cardNameLowerCase = card.name.toLowerCase();
 
-			if (searchString.length > 0 && !card.name.toLowerCase().includes(searchString.toLowerCase())) continue;
-			if (searchStringExcluded.length > 0 && card.name.toLowerCase().includes(searchStringExcluded.toLowerCase())) continue;
+			if (searchString.length > 0 && !cardNameLowerCase.includes(searchString)) continue;
+			if (excludedStrings.length > 0 && excludedStrings.some((str) => cardNameLowerCase.includes(str))) continue;
 
 			if (!!traitsFilter && traitsFilter.length > 0) {
 				if (isOr) {

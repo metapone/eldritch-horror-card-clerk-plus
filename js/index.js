@@ -114,18 +114,36 @@ function setDeckCount(count, countPlaceholder) {
 }
 
 function renderNameFilter(cards, nameFilterPlaceholder, id) {
-	const nameInputPlaceholders = nameFilterPlaceholder.querySelectorAll(".name-filter__input");
+	const suggestionListName = `nameFilter${id}`;
 	const nameSuggestionPlaceholder = nameFilterPlaceholder.querySelector(".name-filter__suggestion");
+	nameSuggestionPlaceholder.setAttribute("id", suggestionListName);
+	const nameInputPlaceholder = nameFilterPlaceholder.querySelector(".name-filter__input");
+	nameInputPlaceholder.setAttribute("list", suggestionListName);
+	
+	const cardNames = cards.map((card) => card.name).sort();
 	const fragment = document.createDocumentFragment();
-
-	nameInputPlaceholders.forEach((placeholder) => placeholder.setAttribute("list", `nameFilter${id}`));
-	nameSuggestionPlaceholder.setAttribute("id", `nameFilter${id}`);
-
-	cards.forEach((card) => {
-		let option = new Option(card.name, card.name);
-		fragment.appendChild(option);
-	});
+	cardNames.forEach((name) => fragment.appendChild(new Option(name)));
 	nameSuggestionPlaceholder.replaceChildren(fragment);
+
+	const excludedRows = nameFilterPlaceholder.querySelector(".name-filter-excluded__rows");
+	addExcludedRow(excludedRows);
+	nameFilterPlaceholder.querySelector(".name-filter-excluded__add").addEventListener("click", () => {
+		addExcludedRow(excludedRows);
+	});
+
+	function addExcludedRow(container) {
+		const template = document.getElementById("nameFilterExcludedRowTemplate");
+		const itemNode = template.content.cloneNode(true);
+		itemNode.querySelector(".name-filter__input--inverted").setAttribute("list", suggestionListName);
+		itemNode.querySelector(".name-filter-excluded__remove").addEventListener("click", (e) => {
+			e.target.closest(".name-filter-excluded__row").remove();
+		});
+		itemNode.querySelector(".name-filter__checkbox").addEventListener("change", (e) => {
+			e.target.closest(".name-filter-excluded__row")
+				.querySelector(".name-filter__input--inverted").disabled = !e.target.checked;
+		});
+		container.appendChild(itemNode);
+	}
 }
 
 function renderTraitList(traits, traitPlaceholder) {
@@ -239,13 +257,21 @@ function drawCard(event) {
 	const form = event.target;
 	const formData = new FormData(form);
 	const deck = decks[formData.get("deckIndex")];
-	const nameFilter = form.querySelector(".name-filter").style.display == "none" ? null : formData.get("nameFilter");
-	const nameFilterExcluded = form.querySelector(".name-filter").style.display == "none" ? null : formData.get("nameFilterExcluded");
+
+	const isNameFilterVisible = form.querySelector(".name-filter").style.display != "none";
+	let nameFilter = null;
+	let nameFiltersExcluded = null;
+	if (isNameFilterVisible) {
+		nameFilter = formData.get("nameFilter");
+		nameFiltersExcluded = formData
+			.getAll("nameFilterExcluded")
+			.filter((s) => s.length > 0);
+	}
 	const traits = form.querySelector(".trait-filter").style.display == "none" ? null : formData.getAll("traits");
 	const costs = form.querySelector(".cost-filter").style.display == "none" ? null : formData.getAll("costs");
 	const isOr = !!formData.get("isOr");
 
-	const result = deck.drawCards(1, traits, isOr, nameFilter, nameFilterExcluded, costs);
+	const result = deck.drawCards(1, traits, isOr, nameFilter, nameFiltersExcluded, costs);
 
 	const drawnCardPlaceholder = form.querySelector(".newest-card");
 	const noDrawnCardMessage = form.querySelector(".no-newest-card");

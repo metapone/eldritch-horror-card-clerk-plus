@@ -157,7 +157,7 @@ deckData.push({
 				},
 				{
 					id: 29,
-					name: "Livre d-Ivon",
+					name: "Livre d'Ivon",
 					traits: ["Item", "Tome"],
 				},
 				{

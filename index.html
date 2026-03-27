@@ -241,9 +241,10 @@
 							Name Included:
 							<input name="nameFilter" class="name-filter__input" />
 						</div>
-						<div>
+						<div class="name-filter-excluded">
 							Name Excluded:
-							<input name="nameFilterExcluded" class="name-filter__input name-filter__input--inverted" />
+							<div class="name-filter-excluded__rows"></div>
+							<button type="button" class="name-filter-excluded__add">Add Row</button>
 						</div>
 						<datalist class="name-filter__suggestion"></datalist>
 					</div>
@@ -316,6 +317,14 @@
 				<input type="checkbox" class="deck-visibility-item__index" />
 				<span class="deck-visibility-item__name"></span>
 			</label>
+		</template>
+
+		<template id="nameFilterExcludedRowTemplate">
+			<div class="name-filter-excluded__row">
+				<input type="checkbox" class="name-filter__checkbox" checked switch />
+				<input name="nameFilterExcluded" class="name-filter__input name-filter__input--inverted" />
+				<button type="button" class="name-filter-excluded__remove">Delete Row</button>
+			</div>
 		</template>
 
 		<script src="js/index_postRender.js"></script>
