@@ -8,6 +8,14 @@ function markSelectedExpansions() {
 }
 
 function startNewGame() {
+	// Ask for a session name and create a new session entry
+	const proposed = new Date().toISOString().split("T")[0];
+	const nameInput = prompt("Name this session:", `Session ${proposed}`);
+	const sessionName = nameInput && nameInput.trim() ? nameInput.trim() : `Session ${proposed}`;
+	if (typeof createNewSession === "function") {
+		createNewSession(sessionName);
+	}
+
 	resetGlobalVariables();
 	switchToView("mainView");
 	markSelectedExpansions();
@@ -24,6 +32,10 @@ function resetGlobalVariables() {
 	mythosAvailable.length = 0;
 	mythosDeck = null;
 	boxMythosDeck = null;
+	// Reset deck visibility for new sessions
+	if (typeof deckVisibility !== "undefined") {
+		deckVisibility = {};
+	}
 }
 
 function buildDecks() {
@@ -301,6 +313,11 @@ function switchToView(viewId) {
 	}
 	document.getElementById(viewId).style.display = "block";
 	window.scrollTo(0, 0);
+
+	// When returning to the start view, refresh the saved sessions list
+	if (viewId === "startView" && typeof renderSavedSessions === "function") {
+		renderSavedSessions();
+	}
 }
 
 function toggleSectionByClassName() {

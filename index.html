@@ -34,9 +34,20 @@
 			<button id="loadGameButton" type="button" onclick="loadGame()">Load Last Session</button>
 			<button id="newGameButton" type="button" onclick="startNewGame()">New Game</button>
 			<div>Your progress is automatically saved as you interact with the website.</div>
+			<div id="savedSessions" class="saved-sessions">
+				<div class="section__name">Saved Sessions</div>
+				<button id="deleteAllSessionsButton" type="button" onclick="deleteAllSessions()">Delete All Sessions</button>
+				<div class="saved-sessions__empty">No saved sessions yet.</div>
+				<div class="saved-sessions__list"></div>
+			</div>
 			<div id="expansions" class="expansions"></div>
 		</div>
 		<div id="mainView" class="view">
+			<!-- Current Session Banner -->
+			<div id="currentSessionBanner" class="deck__name" style="display: none; text-align: center;">
+				Loaded: <span id="currentSessionName"></span>
+			</div>
+
 			<fieldset class="deck-visibility">
 				<div class="section__name">Toggle Deck Visibility</div>
 				<div class="section__decks"></div>
@@ -212,6 +223,23 @@
 				<img class="expansion__image" height="33" />
 				<div class="expansion__name"></div>
 			</label>
+		</template>
+
+		<template id="savedSessionsTemplate">
+			<table class="saved-sessions__table">
+				<thead><tr><th>Name</th><th>Updated</th><th>Actions</th></tr></thead>
+				<tbody>
+					<tr>
+						<td><span class="saved-session__name"></span></td>
+						<td><span class="saved-session__meta"></span></td>
+						<td>
+							<button type="button">Load</button>
+							<button type="button">Rename</button>
+							<button type="button">Delete</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</template>
 
 		<template id="deckItemTemplate">

@@ -286,3 +286,32 @@ footer {
 .blue {
 	background-color: #5870c4;
 }
+
+/* Saved Sessions: inner borders between cells (no outer border) */
+.saved-sessions__table {
+	width: 100%;
+	border-collapse: collapse; /* so borders touch cleanly */
+	margin-top: 10px;
+}
+
+.saved-sessions__table th,
+.saved-sessions__table td {
+	padding: 4px 6px;
+	text-align: left;
+}
+
+/* Vertical inner lines: every cell after the first in a row */
+.saved-sessions__table thead th + th,
+.saved-sessions__table tbody td + td {
+	border-left: 1px solid #af814f;
+}
+
+/* Horizontal inner lines: every row after the first */
+.saved-sessions__table tbody tr + tr td {
+	border-top: 1px solid #af814f;
+}
+
+/* Optional: subtle separator under header */
+.saved-sessions__table thead th {
+	border-bottom: 1px solid #af814f;
+}
